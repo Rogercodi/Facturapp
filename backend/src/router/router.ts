@@ -13,4 +13,9 @@ const Router = express.Router();
    res.send(result.rows)
 });
 
+Router.post('/user/data/newinvoice', async (req: Request, res: Response) => {
+   let result = await API.poolConnection.query('SELECT * FROM users')
+   res.send(result.rows)
+});
+
  export default Router;

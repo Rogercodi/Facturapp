@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function InvoiceForm() {
 
@@ -6,8 +6,8 @@ const [base, setBase] = useState('');
 const [iva, setIva] = useState('');
 const [irpf, setIrpf] = useState('');
 const [body, setBody] = useState('');
-const [totalIva, setTotalIva] = useState('');
-const [totalIrpf, setTotalIrpf] = useState('');
+const [fecha, setFecha] = useState('')
+
 
 
   return (
@@ -15,7 +15,11 @@ const [totalIrpf, setTotalIrpf] = useState('');
       <div className="">
         <h1 className="text-4xl font-bold p-4">Factura</h1>
         <h2 className="text-3xl pt-4 ml-4">Fecha</h2>
-        <input type="date" className="border-2 mb-4 ml-4"></input>
+        <input 
+        onChange={(e) => {
+          setFecha(e.target.value)
+        }}
+        type="date" className="border-2 mb-4 ml-4"></input>
 
         <h3 className="font-bold">R</h3>
         <h4>7</h4>
@@ -38,26 +42,31 @@ const [totalIrpf, setTotalIrpf] = useState('');
         />
 
         </div>
-{/* IVA */}        
-        <div>
+{/* IVA*/}
+        <div className="flex">
           <select onChange={(e) => {
-            e.preventDefault(),
             setIva(e.target.value)
           }} className="border-2 mb-4 ml-4" name="iva" id="iva">
           <option selected>IVA aplicable</option>
           <option value="10">10%</option>
           <option value="21">21%</option>
         </select>
-        <input id="iva" 
-        onChange={(e) => {
-          e.preventDefault();
-          setTotalIva(e.target.value)
-        }} value={(parseInt(base) * parseInt(iva)) / 100} className="border-2 mb-4 ml-4" type="text" readOnly/>
+        <div id="IVA" className="w-1/12 border-2 mb-4 ml-4 min-h-min" >{parseInt(base) * parseInt(iva) / 100}
         </div>
+
+        {/* <input name="IVA" id="IVA" 
+       value={(parseInt(base) * parseInt(iva)) / 100} 
+       onChange={()=> {
+        console.log('onchange')
+        setTotalIrpf(document.querySelector("#IVA")?.value)
+       }}
+       className="border-2 mb-4 ml-4" type="text" ></input> */}
+        </div>
+        
 {/* IRPF */}
-        <div>
+        <div className="flex">
         <select onChange={(e) => {
-            e.preventDefault(),
+            
             setIrpf(e.target.value)
           }} 
           className="border-2 mb-4 ml-4" name="iva" id="iva">
@@ -75,23 +84,28 @@ const [totalIrpf, setTotalIrpf] = useState('');
           <option value="12">12%</option>
           <option value="13">13%</option>
         </select>
-       
-        <input id='irpf' value={(parseInt(base) * parseInt(irpf)) / 100} className="border-2 mb-4 ml-4" type="text" />
+        <div id="IRPF" className="w-1/12 border-2 mb-4 ml-4 min-h-min" >{((parseInt(base) * parseInt(irpf)) / 100)}
         </div>
+        {/* <input id='IRPF' value={(parseFloat(base) * parseFloat(irpf)) / 100} className="border-2 mb-4 ml-4" type="text" /> */}
+        </div>
+
+        {/* CONCEPTO */}
       <div>
         <textarea onChange={(e) => {
             e.preventDefault(),
             setBody(e.target.value)
-          }} className="border-2 mb-4 ml-4" name="body" id="body" cols="30" rows="4" placeholder="Concepto"></textarea>
+          }} className="border-2 mb-4 ml-4" name="body" id="body"  placeholder="Concepto"></textarea>
       </div>
-
-      <div>
-        <a className="ml-4">Total</a><input value={(document.getElementById(iva))} className="border-2 mb-4 ml-4" type="number" readOnly />
+{/* TOTAL */}
+      <div className="flex">        
+        <a className="ml-4">Total</a><div className="w-1/12 border-2 mb-4 ml-4 min-h-min" >{(parseFloat(base) + parseFloat(document.querySelector("#IVA")?.innerHTML) - parseFloat(document.querySelector("#IRPF")?.innerHTML)).toFixed(2) }€</div>
       </div>
       
       <button type="submit">Generar Factura</button>
-    </div>
+          </div>
+    
   );
 }
 
 export default InvoiceForm;
+
