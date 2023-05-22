@@ -24,7 +24,7 @@ class API {
             this.app.use(express_1.default.json());
         this.app.use(express_1.default.urlencoded({ extended: false }));
         this.app.use((0, cors_1.default)({
-            origin: 'hhtp://localhost:5173',
+            origin: 'http://localhost:5173',
             credentials: true
         }));
         this.app.use((0, morgan_1.default)('dev'));

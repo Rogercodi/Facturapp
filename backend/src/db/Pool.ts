@@ -12,4 +12,4 @@ export class PoolConnection {
     public getPool() {
         return this.pool
     }
-}
+};
