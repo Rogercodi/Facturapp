@@ -1,15 +1,21 @@
 
 import { useContext } from "react";
-import { facturappContext } from "./components/context/Context";
+import { FacturappContext, FacturappContextType } from "./components/context/Context";
 
 function App() {
 
-  const { username } = useContext(facturappContext)
+  const { name, setName } = useContext(FacturappContext) as FacturappContextType
+  
+  console.log(name)
   return (
     <div>
-      <h1 className="text-center text-4xl">Bienvenido NOMBRE</h1>
-      {username}
-      {'hola'}
+      <h1 className="text-center text-4xl">Bienvenido {name}</h1>
+      <button
+      onClick={()=> {
+        setName('Roger')
+      }}
+      >CLICK ME</button>
+      
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 
 function MyInvoices() {
   let loader = useLoaderData().data;
-  console.log(loader);
+  console.log('loader', loader);
 
   return (
     <div className="flex flex-col mt-10">

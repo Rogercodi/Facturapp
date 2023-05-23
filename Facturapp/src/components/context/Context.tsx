@@ -1,23 +1,29 @@
-import { createContext, useState } from "react";
+import { ReactNode, createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 
-interface context {
-    username: string
+interface props {
+    children: ReactNode
 }
 
-export const facturappContext = createContext<context | null>(null)
+export type FacturappContextType = {
+    name: string,
+    setName: (value: string) => void
+}
 
-export function FacturappContextProvider(): any {
-    const [name, setName] = useState('Roger')
+export const FacturappContext = createContext({})
+
+export function FacturappContextProvider({children}: props){
+
+    const [name, setName] = useState<string>('testcontext');
+
     return(
-        <facturappContext.Provider
-        value={{
-            username: name
-        }}
+        <FacturappContext.Provider 
+        value={{name, setName}}
         >
-
         <Outlet />
-        </facturappContext.Provider>
-    )
+        {children}
+        
+        </FacturappContext.Provider>
 
+    )
 }

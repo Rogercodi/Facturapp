@@ -23,7 +23,10 @@ CREATE TABLE payers (
     domicilio VARCHAR(30),
     poblacion VARCHAR(30),
     cp INT,
-    PRIMARY KEY(idpayer)
+    idusuario INT,
+    PRIMARY KEY(idpayer),
+    FOREIGN KEY(idusuario)
+    REFERENCES users(idusuario)
 );
 
 INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp) VALUES ('Igns', 'Test1 Test3', 'igns@test.com', '78787878B', 'C/Esdevenidor', 'Ivars', 25260);

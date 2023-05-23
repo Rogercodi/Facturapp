@@ -40,6 +40,7 @@ Router.post("/getuser", (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 }));
 Router.get("/user/myinvoices", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let result = yield API_1.API.poolConnection.query("SELECT * FROM invoices");
+    console.log(result.rows);
     res.send(result.rows);
 }));
 Router.post("/user/newinvoice", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

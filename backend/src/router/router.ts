@@ -1,14 +1,19 @@
 import express, { NextFunction, Request, Response } from "express";
 import { API } from "../API";
-import { UserRepository } from "../Repositories/UserRepositories";
 import { User, UserAppI, sqlUserI } from "../Repositories/User";
 import { QueryResult } from "pg";
 
 const Router = express.Router();
 
-Router.get("/", async (req: Request, res: Response) => {
-  let result = await API.poolConnection.query("SELECT * FROM test");
+Router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let result = await API.poolConnection.query("SELECT * FROM test");
   res.send(result);
+  } catch (error) {
+    console.log(error)
+    next();
+  }
+  
 });
 
 
@@ -16,14 +21,11 @@ Router.get("/", async (req: Request, res: Response) => {
 Router.post("/getuser", async (req: Request, res: Response, next: NextFunction) => {
   try {
     
-    const { email } = req.body
-  console.log(req.body)
-  const text = "SELECT * FROM users u WHERE u.email=$1"
-  const values = [email]
+  let { email } = req.body
+  let text = "SELECT * FROM users u WHERE u.email=$1"
+  let values = [email]
   let result: QueryResult<sqlUserI> = await API.poolConnection.query(text, values);
-  console.log(result.rows)
   let user: UserAppI = new User(result.rows[0])
-  console.log(user)
   res.send(user);
 
   } catch (error) {
@@ -33,13 +35,25 @@ Router.post("/getuser", async (req: Request, res: Response, next: NextFunction) 
 });
 
 
-
-Router.get("/user/myinvoices", async (req: Request, res: Response) => {
+//GET MYINVOICES
+Router.post("/user/myinvoices", async (req: Request, res: Response, next: NextFunction) => {
   let result = await API.poolConnection.query("SELECT * FROM invoices");
-
+  console.log(result.rows)
   res.send(result.rows);
 });
 
+
+//GET MYPAYERS
+Router.get('/user/mypayers', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    //--------------------------------------//
+  } catch (error) {
+    console.log(error)
+    next();
+  }
+})
+
+//NEW INVOICE
 Router.post("/user/newinvoice", async (req: Request, res: Response) => {
   const { base, iva, totalIva, irpf, totalIrpf, body, fecha, total } = req.body;
   const text =
@@ -48,5 +62,16 @@ Router.post("/user/newinvoice", async (req: Request, res: Response) => {
   const result = await API.poolConnection.query(text, values);
   res.send(result.rows);
 });
+
+//NEW PAYER
+Router.post('/user/newpayer', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    //------------------------//
+    res.send('newpayer')
+  } catch (error) {
+    console.log(error)
+    next();
+  }
+})
 
 export default Router;

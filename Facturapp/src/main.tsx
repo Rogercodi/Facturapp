@@ -26,7 +26,11 @@ const router = createBrowserRouter([
     }]
   }, {
     path: '/user',
-    element: [<UserNav />, <FacturappContextProvider />, <App />],
+    element: <FacturappContextProvider children={''} />,
+    children: [{
+      path: '/user',
+      element: [<UserNav />, <App />]
+    }]
   }, {
     path: '/user/data',
     element: <UserNav />,
@@ -43,7 +47,7 @@ const router = createBrowserRouter([
       
     }, {
       path: '/user/data/mypayers',
-      element: <MyPayers />
+      element: <MyPayers />,
     }, {
       path: '/user/data/newinvoice',
       element: <InvoiceForm />
