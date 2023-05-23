@@ -10,6 +10,7 @@ import UserNav from './components/user/UserNav.tsx'
 import MyInvoices from './components/user/MyInvoices.tsx'
 import MyPayers from './components/user/MyPayers.tsx'
 import axios from 'axios'
+import { FacturappContextProvider } from './components/context/Context.tsx'
 
 
 const router = createBrowserRouter([
@@ -25,13 +26,20 @@ const router = createBrowserRouter([
     }]
   }, {
     path: '/user',
-    element: [<UserNav />, <App />],
+    element: [<UserNav />, <FacturappContextProvider />, <App />],
   }, {
     path: '/user/data',
     element: <UserNav />,
     children: [{
       path: '/user/data/myinvoices',
       element: <MyInvoices />,
+      loader: async () => {
+        let result = await axios({
+          url: 'http://localhost:3000/user/myinvoices',
+          method: 'get'
+        })
+        return result
+      }
       
     }, {
       path: '/user/data/mypayers',

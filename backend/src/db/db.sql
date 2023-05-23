@@ -27,3 +27,22 @@ CREATE TABLE payers (
 );
 
 INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp) VALUES ('Igns', 'Test1 Test3', 'igns@test.com', '78787878B', 'C/Esdevenidor', 'Ivars', 25260);
+
+CREATE TABLE invoices (
+    idinvoice serial not null,
+    base INT,
+    iva INT,
+    totalIva INT,
+    irpf INT,
+    totalIrpf INT,
+    body VARCHAR(50),
+    fecha DATE,
+    total INT,
+    idpayer INT,
+    idusuario INT,
+    PRIMARY KEY(idinvoice),
+    FOREIGN KEY(idpayer)
+    REFERENCES payers(idpayer),
+    FOREIGN KEY(idusuario)
+    REFERENCES users(idusuario)
+);
