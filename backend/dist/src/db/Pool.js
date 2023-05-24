@@ -12,3 +12,4 @@ class PoolConnection {
     }
 }
 exports.PoolConnection = PoolConnection;
+;

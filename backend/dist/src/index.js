@@ -25,7 +25,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     }
     else {
         yield app.init(configuration.server);
-        console.log(`hola, ${port}, ${hostapp}`);
     }
 });
 main().catch((error) => {

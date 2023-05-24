@@ -1,56 +1,22 @@
 import express, { NextFunction, Request, Response } from "express";
 import { API } from "../API";
-import { User, UserAppI, sqlUserI } from "../Repositories/User";
+import { User} from "../Repositories/User";
 import { QueryResult } from "pg";
 import passport from "passport";
+import bcrypt from 'bcrypt';
+import { SignUpController } from "../controllers/signupController";
+import { LoginController } from "../controllers/login-controller";
 
 const Router = express.Router();
 
-Router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    let result = await API.poolConnection.query("SELECT * FROM test");
-  res.send(result);
-  } catch (error) {
-    console.log(error)
-    next();
-  }
-  
-});
-
 //LOGIN
+const logInController = new LoginController();
+Router.post("/signin", logInController.logIn.bind(logInController));
 
-Router.post("/signin", async (req, res, next) => {
-  await passport.authenticate("local", async (err: any, user: Express.User) => {
-    
-    if (err) throw err;
-    if (!user) {
-      res.status(210).send({message: "El usuario no existe"});
-    } else {
-      req.logIn(user, err => {
-       
-        if (err) throw err;
-        res.status(201).send({ message: "Bienvenido!", user });
-      });
-    }
-  })(req, res, next)
-});
+//REGISTER
+const signUpController = new SignUpController();
+Router.post('/signup', signUpController.signUp.bind(signUpController))
 
-//GETUSER
-Router.post("/getuser", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    
-  let { email } = req.body
-  let text = "SELECT * FROM users u WHERE u.email=$1"
-  let values = [email]
-  let result: QueryResult<sqlUserI> = await API.poolConnection.query(text, values);
-  let user: UserAppI = new User(result.rows[0])
-  res.send(user);
-
-  } catch (error) {
-    console.log(error)
-    next();
-  }
-});
 
 
 //GET MYINVOICES

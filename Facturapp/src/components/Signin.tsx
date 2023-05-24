@@ -13,15 +13,18 @@ const handleLogin = async () => {
     email,
     password
   }
-console.log('login', data)
+
   let result = await axios({
     url: 'http://localhost:3000/signin',
     method: 'post',
     data: data
   })
+
+  console.log(result)
  
-  if(result.status === 201){
-    navigate('/user')
+  if(result.data.message === 'Bienvenido!'){
+    setTimeout(() => navigate('/user'), 1000)
+    
   } else if (result.status === 210) {
     console.log(result.data.message)
    

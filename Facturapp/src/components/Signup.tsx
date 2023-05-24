@@ -17,12 +17,14 @@ function Signup() {
             password,
             confirmPassword
         }
-        console.log(user)
-        await axios({
-            url: 'http://localhost:3000/signup',
-            method: 'post',
-            data: user
+        console.log('hola')
+        let result = await axios({
+          url: 'http://localhost:3000/signup',
+          method: 'post',
+          data: user
         })
+        console.log(result)
+       
     }
 
   return (
@@ -74,7 +76,10 @@ function Signup() {
       <div>
         <button 
         type="submit" 
-        onClick={() => registerUser()}
+        onClick={(e) => {
+          e.preventDefault();
+          registerUser()
+        }}
         className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Registrarse</button>
       </div>
     </form>

@@ -9,24 +9,19 @@ export const loginPassport = function initialize(passport: PassportStatic) {
     password: string,
     done: Function
   ) => {
-    console.log("test");
-    API.poolConnection.query(
+       API.poolConnection.query(
       "SELECT * FROM users WHERE email = $1",
       [email],
       (err, results) => {
         if (err) {
           throw err;
         }
-
-        console.log(results.rows);
-
         if (results.rows.length > 0) {
           const user = results.rows[0];
 
           bcrypt.compare(password, user.passwordu, (err, isMatch) => {
-            console.log("compare", typeof password, typeof user.passwordu, isMatch = true);
             if (err) {
-              console.log('error')
+              console.log("error");
               throw err;
             }
 
@@ -34,7 +29,7 @@ export const loginPassport = function initialize(passport: PassportStatic) {
               console.log("ismatch");
               return done(null, user);
             } else {
-              console.log('else')
+              console.log("else");
               return done(null, false, { message: "Password is not correct" });
             }
           });
@@ -46,7 +41,6 @@ export const loginPassport = function initialize(passport: PassportStatic) {
   };
 
   passport.use(
-    
     new LocalStrategy(
       {
         usernameField: "email",
@@ -56,12 +50,11 @@ export const loginPassport = function initialize(passport: PassportStatic) {
     )
   );
 
-  passport.serializeUser(
-    (user: any, done) => {console.log("serialize"),
-    done(null, user.idusuario)}
-  );
+  passport.serializeUser((user: any, done) => {
+    console.log("serialize"), done(null, user.idusuario);
+  });
 
-  passport.deserializeUser((id, done) => {
+  passport.deserializeUser( (id, done) => {
     API.poolConnection.query(
       "SELECT * FROM users WHERE id = $1",
       [id],

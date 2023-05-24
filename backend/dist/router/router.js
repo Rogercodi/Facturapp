@@ -14,51 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const API_1 = require("../API");
-const User_1 = require("../Repositories/User");
-const passport_1 = __importDefault(require("passport"));
+const signupController_1 = require("../controllers/signupController");
+const login_controller_1 = require("../controllers/login-controller");
 const Router = express_1.default.Router();
-Router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        let result = yield API_1.API.poolConnection.query("SELECT * FROM test");
-        res.send(result);
-    }
-    catch (error) {
-        console.log(error);
-        next();
-    }
-}));
 //LOGIN
-Router.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield passport_1.default.authenticate("local", (err, user) => __awaiter(void 0, void 0, void 0, function* () {
-        if (err)
-            throw err;
-        if (!user) {
-            res.status(210).send({ message: "El usuario no existe" });
-        }
-        else {
-            req.logIn(user, err => {
-                if (err)
-                    throw err;
-                res.status(201).send({ message: "Bienvenido!", user });
-            });
-        }
-    }))(req, res, next);
-}));
-//GETUSER
-Router.post("/getuser", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        let { email } = req.body;
-        let text = "SELECT * FROM users u WHERE u.email=$1";
-        let values = [email];
-        let result = yield API_1.API.poolConnection.query(text, values);
-        let user = new User_1.User(result.rows[0]);
-        res.send(user);
-    }
-    catch (error) {
-        console.log(error);
-        next();
-    }
-}));
+const logInController = new login_controller_1.LoginController();
+Router.post("/signin", logInController.logIn.bind(logInController));
+//REGISTER
+const signUpController = new signupController_1.SignUpController();
+Router.post('/signup', signUpController.signUp.bind(signUpController));
 //GET MYINVOICES
 Router.post("/user/myinvoices", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     let result = yield API_1.API.poolConnection.query("SELECT * FROM invoices");

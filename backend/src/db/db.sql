@@ -4,7 +4,7 @@ CREATE TABLE users (
     apellidos VARCHAR(50),
     email VARCHAR(50) unique,
     dni VARCHAR(50) unique,
-    passwordu VARCHAR(30),
+    passwordu VARCHAR(60),
     numcuenta VARCHAR(30),
     domicilio VARCHAR(30),
     poblacion VARCHAR(30),
