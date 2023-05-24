@@ -1,10 +1,32 @@
 import React, { useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Signin() {
 
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('')
+const navigate = useNavigate()
+
+const handleLogin = async () => {
+  let data = {
+    email,
+    password
+  }
+console.log('login', data)
+  let result = await axios({
+    url: 'http://localhost:3000/signin',
+    method: 'post',
+    data: data
+  })
+ 
+  if(result.status === 201){
+    navigate('/user')
+  } else if (result.status === 210) {
+    console.log(result.data.message)
+   
+  }
+}
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,7 +36,7 @@ const [password, setPassword] = useState('')
   </div>
 
   <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form className="space-y-6" action="#" method="POST">
+    <form className="space-y-6" method='post' >
       <div>
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">Correo electrónico</label>
         <div className="mt-2">
@@ -35,13 +57,10 @@ const [password, setPassword] = useState('')
       </div>
 
       <div>
-        <button type="submit" 
-        onClick={async (e) => {
-            e.preventDefault()
-            await axios({
-                url: 'http://localhost:3000/signin',
-                method: 'post'
-            }).then((data) => console.log(data))
+        <button
+        onClick={(e) => {
+          e.preventDefault(),
+          handleLogin()
         }}
         className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Iniciar Sesión</button>
       </div>
@@ -49,7 +68,7 @@ const [password, setPassword] = useState('')
 
     <p className="mt-10 text-center text-sm text-gray-500">
       Aún no estás registrado? 
-      <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">   Hazlo en un solo paso!</a>
+      <a className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">   Hazlo en un solo paso!</a>
     </p>
   </div>
 </div>

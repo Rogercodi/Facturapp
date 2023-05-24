@@ -16,8 +16,11 @@ exports.API = void 0;
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
+const express_session_1 = __importDefault(require("express-session"));
 const Pool_1 = require("./db/Pool");
 const router_1 = __importDefault(require("./router/router"));
+const passport_1 = __importDefault(require("passport"));
+const passport_2 = require("./auth/passport");
 class API {
     constructor() {
         this.app = (0, express_1.default)(),
@@ -27,6 +30,13 @@ class API {
             origin: 'http://localhost:5173',
             credentials: true
         }));
+        this.app.use((0, express_session_1.default)({
+            secret: 'facturapp',
+            resave: false,
+            saveUninitialized: false
+        }));
+        this.app.use(passport_1.default.initialize());
+        this.app.use(passport_1.default.session());
         this.app.use((0, morgan_1.default)('dev'));
         this.app.use(router_1.default);
     }
@@ -34,6 +44,7 @@ class API {
     init(config) {
         return __awaiter(this, void 0, void 0, function* () {
             API.poolConnection = new Pool_1.PoolConnection().pool;
+            (0, passport_2.loginPassport)(passport_1.default);
             return this.listen(config.port, config.hostapp);
         });
     }

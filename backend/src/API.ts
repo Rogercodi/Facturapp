@@ -3,10 +3,13 @@ import morgan from 'morgan';
 import * as http from 'http';
 import { Pool } from 'pg';
 import cors from 'cors';
-import pg from 'pg'
+import session from 'express-session'
 import { PoolConnection } from './db/Pool';
 import { serverConfig } from './config/Config-types';
 import Router from './router/router';
+import passport from 'passport';
+import { loginPassport } from './auth/passport';
+
 
 
 
@@ -22,14 +25,21 @@ export class API {
         this.app.use(cors({
             origin: 'http://localhost:5173',
             credentials: true
-        }))
+        }));
+        this.app.use(session({
+            secret: 'facturapp',
+            resave: false,
+            saveUninitialized: false
+        }));
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
         this.app.use(morgan('dev'));
         this.app.use(Router);     
     };
 
     public async init(config: serverConfig){
         API.poolConnection = new PoolConnection().pool;
-        
+        loginPassport(passport)
         return this.listen(config.port, config.hostapp);
     }
 

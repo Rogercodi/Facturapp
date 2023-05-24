@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       loader: async () => {
         let result = await axios({
           url: 'http://localhost:3000/user/myinvoices',
-          method: 'get'
+          method: 'post'
         })
         return result
       }

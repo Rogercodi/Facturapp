@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import { API } from "../API";
 import { User, UserAppI, sqlUserI } from "../Repositories/User";
 import { QueryResult } from "pg";
+import passport from "passport";
 
 const Router = express.Router();
 
@@ -16,6 +17,23 @@ Router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   
 });
 
+//LOGIN
+
+Router.post("/signin", async (req, res, next) => {
+  await passport.authenticate("local", async (err: any, user: Express.User) => {
+    
+    if (err) throw err;
+    if (!user) {
+      res.status(210).send({message: "El usuario no existe"});
+    } else {
+      req.logIn(user, err => {
+       
+        if (err) throw err;
+        res.status(201).send({ message: "Bienvenido!", user });
+      });
+    }
+  })(req, res, next)
+});
 
 //GETUSER
 Router.post("/getuser", async (req: Request, res: Response, next: NextFunction) => {
