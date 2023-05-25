@@ -16,12 +16,12 @@ function UserNav() {
   </div>
   <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
     <div className="flex justify-evenly text-sm lg:flex-grow">
-        <Link to={'/user/data/newinvoice'} className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">Crear Factura</Link>
+        <Link to={'/user/newinvoice'} className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">Crear Factura</Link>
      
-      <Link to={'/user/data/myinvoices'}  className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+      <Link to={'/user/myinvoices'}  className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
         Mis Facturas
       </Link>
-      <Link to={'/user/data/mypayers'} className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white">
+      <Link to={'/user/mypayers'} className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white">
         Mis Pagadores
       </Link>
     </div>
@@ -30,7 +30,7 @@ function UserNav() {
     </div>
   </div>
 </nav>
-<Outlet />
+{/* <Outlet /> */}
     </div>
     
   )

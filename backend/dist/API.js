@@ -18,7 +18,8 @@ const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const express_session_1 = __importDefault(require("express-session"));
 const Pool_1 = require("./db/Pool");
-const router_1 = __importDefault(require("./router/router"));
+const protected_router_1 = __importDefault(require("./router/protected-router"));
+const shared_router_1 = __importDefault(require("./router/shared-router"));
 const passport_1 = __importDefault(require("passport"));
 const passport_2 = require("./auth/passport");
 class API {
@@ -38,7 +39,8 @@ class API {
         this.app.use(passport_1.default.initialize());
         this.app.use(passport_1.default.session());
         this.app.use((0, morgan_1.default)('dev'));
-        this.app.use(router_1.default);
+        this.app.use(shared_router_1.default);
+        this.app.use(protected_router_1.default);
     }
     ;
     init(config) {
@@ -51,7 +53,7 @@ class API {
     listen(port, host) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.httpServer = this.app.listen(port, host, () => {
-                console.log('Successfully running on Port 3000');
+                console.log(`Facturapp is succesfully running at http://${host}:${port} ✨✨`);
             });
         });
     }

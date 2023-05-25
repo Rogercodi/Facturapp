@@ -18,8 +18,8 @@ CREATE TABLE payers (
     idpayer serial not null,
     nombre VARCHAR(20),
     apellidos VARCHAR(50),
-    email VARCHAR(50) unique,
-    nif VARCHAR(50) unique,
+    email VARCHAR(50),
+    nif VARCHAR(50),
     domicilio VARCHAR(30),
     poblacion VARCHAR(30),
     cp INT,
@@ -29,7 +29,7 @@ CREATE TABLE payers (
     REFERENCES users(idusuario)
 );
 
-INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp) VALUES ('Igns', 'Test1 Test3', 'igns@test.com', '78787878B', 'C/Esdevenidor', 'Ivars', 25260);
+INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp, idusuario) VALUES ('Igns', 'Test1 Test3', 'igns@test.com', '78787878B', 'C/Esdevenidor', 'Ivars', 25260, 1);
 
 CREATE TABLE invoices (
     idinvoice serial not null,
@@ -49,3 +49,17 @@ CREATE TABLE invoices (
     FOREIGN KEY(idusuario)
     REFERENCES users(idusuario)
 );
+
+INSERT INTO invoices (
+    base,
+    iva,
+    totalIva,
+    irpf,
+    totalIrpf,
+    body,
+    fecha,
+    total,
+    idpayer,
+    idusuario) VALUES (1500, 10, 15, 10, 15, 'Concert A', '2023-05-10', 1500, 1, 1);
+
+    UPDATE invoices SET base = 1000 ON invoices.idusuario = 1;

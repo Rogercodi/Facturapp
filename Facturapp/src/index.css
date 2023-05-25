@@ -2,7 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-h3, h4{
-    margin-left: 16px;
-    
-}

@@ -1,6 +1,6 @@
 
 import { useContext } from "react";
-import { FacturappContext, FacturappContextType } from "./components/context/Context";
+import { FacturappContext, FacturappContextType } from "./context/Context";
 
 function App() {
 

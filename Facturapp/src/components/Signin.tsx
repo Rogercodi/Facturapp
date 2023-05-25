@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signin() {
 
@@ -32,6 +32,10 @@ const handleLogin = async () => {
 }
 
   return (
+    <div>
+      <h1 className="flex justify-center text-5xl mt-10 font-bold">
+        Bienvenido/a a Facturapp!
+      </h1>
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div className="sm:mx-auto sm:w-full sm:max-w-sm">
     <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company" />
@@ -71,9 +75,10 @@ const handleLogin = async () => {
 
     <p className="mt-10 text-center text-sm text-gray-500">
       Aún no estás registrado? 
-      <a className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">   Hazlo en un solo paso!</a>
+      <Link to={'/signup'}><a className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">   Hazlo en un solo paso!</a></Link>
     </p>
   </div>
+</div>
 </div>
   )
 }

@@ -1,9 +1,8 @@
-import { ReactNode } from "react";
-import { useLoaderData, useRouteLoaderData } from "react-router-dom";
+
 
 function MyInvoices() {
-  let loader = useLoaderData().data;
-  console.log('loader', loader);
+  
+
 
   return (
     <div className="flex flex-col mt-10">
@@ -59,12 +58,12 @@ function MyInvoices() {
                     scope="col"
                     className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
                   >
-                    Action
+                    Acciones
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {loader.map((item) => {
+                {/* {loader.map((item) => {
                   return (
                     <tr>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-gray-200">
@@ -100,16 +99,7 @@ function MyInvoices() {
                       </td>
                     </tr>
                   );
-                })}
-
-                {/* <tr>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{test[0].nombre}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"></td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"></td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a className="text-blue-500 hover:text-blue-700" href="#"></a>
-                </td>
-              </tr> */}
+                })} */}
               </tbody>
             </table>
           </div>

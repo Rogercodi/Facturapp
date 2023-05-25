@@ -1,61 +1,44 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const API_1 = require("../API");
-const signupController_1 = require("../controllers/signupController");
-const login_controller_1 = require("../controllers/login-controller");
+const signup_controller_1 = require("../controllers/index-controllers/signup-controller");
+const login_controller_1 = require("../controllers/index-controllers/login-controller");
+const get_payers_controller_1 = require("../controllers/user-controllers/get-payers-controller");
+const get_invoices_controller_1 = require("../controllers/user-controllers/get-invoices-controller");
+const new_invoice_controller_1 = require("../controllers/user-controllers/new-invoice-controller");
+const new_payer_controller_1 = require("../controllers/user-controllers/new-payer-controller");
+const logout_controller_1 = require("../controllers/index-controllers/logout-controller");
+const update_payer_controller_1 = require("../controllers/user-controllers/update-payer-controller");
+const update_user_controller_1 = require("../controllers/user-controllers/update-user-controller");
 const Router = express_1.default.Router();
 //LOGIN
 const logInController = new login_controller_1.LoginController();
 Router.post("/signin", logInController.logIn.bind(logInController));
 //REGISTER
-const signUpController = new signupController_1.SignUpController();
+const signUpController = new signup_controller_1.SignUpController();
 Router.post('/signup', signUpController.signUp.bind(signUpController));
+//LOGOUT
+const logOutController = new logout_controller_1.LogoutController();
+Router.get('/logout', logOutController.logOut.bind(logOutController));
 //GET MYINVOICES
-Router.post("/user/myinvoices", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    let result = yield API_1.API.poolConnection.query("SELECT * FROM invoices");
-    console.log(result.rows);
-    res.send(result.rows);
-}));
+const myInvoicesController = new get_invoices_controller_1.getInvoicesController();
+Router.post("/user/myinvoices", myInvoicesController.getMyInvoices.bind(myInvoicesController));
 //GET MYPAYERS
-Router.get('/user/mypayers', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        //--------------------------------------//
-    }
-    catch (error) {
-        console.log(error);
-        next();
-    }
-}));
+const getMyPayersController = new get_payers_controller_1.getPayersController();
+Router.post('/user/mypayers', getMyPayersController.getPayers.bind(getMyPayersController));
 //NEW INVOICE
-Router.post("/user/newinvoice", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { base, iva, totalIva, irpf, totalIrpf, body, fecha, total } = req.body;
-    const text = "INSERT INTO invoices (base, iva, totalIva, irpf, totalirpf, body, fecha, total, idpayer) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)";
-    const values = [base, iva, totalIva, irpf, totalIrpf, body, fecha, total, 1];
-    const result = yield API_1.API.poolConnection.query(text, values);
-    res.send(result.rows);
-}));
+const newInvoiceController = new new_invoice_controller_1.invoiceController();
+Router.post("/user/newinvoice", newInvoiceController.newInvoice.bind(newInvoiceController));
 //NEW PAYER
-Router.post('/user/newpayer', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        //------------------------//
-        res.send('newpayer');
-    }
-    catch (error) {
-        console.log(error);
-        next();
-    }
-}));
+const newPayerController = new new_payer_controller_1.payerController();
+Router.post('/user/newpayer', newPayerController.newPayer.bind(newPayerController));
+//UPDATE PAYER
+const editPayerController = new update_payer_controller_1.updatePayerController();
+Router.put('/user/editpayer', editPayerController.updatePayer.bind(editPayerController));
+//UPDATE USER
+const editUserController = new update_user_controller_1.UpdateUserController();
+Router.put('/user/edituser', editUserController.updateUser.bind(editUserController));
 exports.default = Router;

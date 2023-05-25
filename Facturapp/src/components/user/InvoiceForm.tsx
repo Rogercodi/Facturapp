@@ -1,16 +1,7 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState} from "react";
+import { IInvoice } from "../../../../backend/src/app-types/invoice-type";
 
-interface invoiceI {
-  base: number,
-  iva: number,
-  totalIva: number,
-  irpf: number,
-  totalIrpf: number,
-  body: string,
-  fecha: string,
-  total: number
-}
 
 function InvoiceForm() {
   const [base, setBase] = useState(0);
@@ -32,7 +23,7 @@ function InvoiceForm() {
   const handleSubmit = async () => {
   
 
-    let invoice: invoiceI = {
+    let invoice: IInvoice = {
       base,
       iva,
       totalIva,

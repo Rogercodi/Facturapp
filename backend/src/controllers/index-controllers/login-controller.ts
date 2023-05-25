@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { User } from "../Repositories/User";
-import { UserAppI, sqlUserI } from "../app-types/user-types";
+import { User } from "../../Repositories/User";
+import { UserAppI, sqlUserI } from "../../app-types/user-types";
 
 export class LoginController {
   constructor() {}

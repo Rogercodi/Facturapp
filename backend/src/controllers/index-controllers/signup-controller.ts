@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { API } from "../API";
+import { API } from "../../API";
 import bcrypt from "bcrypt";
 
 export class SignUpController {

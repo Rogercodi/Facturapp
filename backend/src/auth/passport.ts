@@ -3,6 +3,7 @@ import { API } from "../API";
 import bcrypt from "bcrypt";
 import { PassportStatic } from "passport";
 
+
 export const loginPassport = function initialize(passport: PassportStatic) {
   const authenticateUser = (
     email: string,
