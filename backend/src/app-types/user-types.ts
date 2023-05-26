@@ -15,7 +15,7 @@ export interface sqlUserI {
     iduser: number;
     name: string;
     surname: string;
-    email: string;
+    correo: string;
     dni: string;
     address: string;
     city: string;

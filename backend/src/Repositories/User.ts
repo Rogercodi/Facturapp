@@ -5,7 +5,7 @@ export class User implements UserAppI {
   readonly iduser: number;
   readonly name: string;
   readonly surname: string;
-  readonly email: string;
+  readonly correo: string;
   readonly dni: string;
   readonly address: string;
   readonly city: string;
@@ -16,7 +16,7 @@ export class User implements UserAppI {
     this.iduser = user.idusuario;
     this.name = user.nombre;
     this.surname = user.apellidos;
-    this.email = user.email;
+    this.correo = user.email;
     this.dni = user.dni;
     this.address = user.domicilio;
     this.city = user.poblacion;

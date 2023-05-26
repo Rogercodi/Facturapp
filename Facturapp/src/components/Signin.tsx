@@ -1,35 +1,50 @@
-import React, { useState} from 'react';
+import React, { useContext, useState} from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { FacturappContext, FacturappContextType } from '../context/Context';
+import { UserAppI } from "../../../backend/src/app-types/user-types";
 function Signin() {
 
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('')
-const navigate = useNavigate()
+const navigate = useNavigate();
+
+const {setIduser, setAddress, setBankNumber, setCity, setCp, setDni, setEmailApp, setName, setSurname } = useContext(FacturappContext) as FacturappContextType;
 
 const handleLogin = async () => {
   let data = {
     email,
     password
-  }
+  };
 
   let result = await axios({
     url: 'http://localhost:3000/signin',
     method: 'post',
     data: data
   })
-
   console.log(result)
- 
-  if(result.data.message === 'Bienvenido!'){
-    setTimeout(() => navigate('/user'), 1000)
-    
-  } else if (result.status === 210) {
-    console.log(result.data.message)
-   
+  let user:UserAppI = result.data.appUser;
+  let {address, banknumber, city,cp, dni,iduser,name,surname,} = user
+  console.log(user)
+
+  if(!user){
+    console.log('Axios: usuario no encontrado')
+  } else {
+    setName(name),
+    setSurname(surname),
+    setDni(dni),
+    setAddress(address),
+    setBankNumber(banknumber),
+    setCp(cp),
+    setIduser(iduser),
+    setCity(city),
+    setEmailApp(email),
+    setTimeout(() => navigate('/user'), 3000)
   }
+
 }
+
+
 
   return (
     <div>

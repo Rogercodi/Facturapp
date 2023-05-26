@@ -1,6 +1,7 @@
 import axios from "axios";
-import { useState} from "react";
+import { useContext, useState} from "react";
 import { IInvoice } from "../../../../backend/src/app-types/invoice-type";
+import { FacturappContext, FacturappContextType } from "../../context/Context";
 
 
 function InvoiceForm() {
@@ -12,9 +13,12 @@ function InvoiceForm() {
   const [totalIva, setTotalIva] = useState(0);
   const [totalIrpf, setTotalIrpf] = useState(0);
   const [total, setTotal] = useState(0);
+  const [idpayer, setIdpayer] = useState<number>(0);
+  const [idusuario, setIdusuario] = useState<number>(0);
 
+  const {name, surname, address, city, dni, emailApp, cp} = useContext(FacturappContext) as FacturappContextType;
+  
   const confirmData = () => {
-
     setTotalIva(parseFloat(document.querySelector('#IVA').innerHTML));
     setTotalIrpf(parseFloat(document.querySelector('#IRPF')?.innerHTML));
     setTotal(parseFloat(document.querySelector('#TOTAL')?.innerHTML));
@@ -31,7 +35,9 @@ function InvoiceForm() {
       totalIrpf,
       body,
       fecha,
-      total
+      total,
+      idpayer,
+      idusuario
     }
 
     let result = await axios({
@@ -49,11 +55,11 @@ function InvoiceForm() {
         <h1 className="text-4xl font-bold p-4">Factura</h1>
        
 
-        <h3 className="font-bold">R</h3>
-        <h4>7</h4>
-        <h4>C</h4>
-        <h4>2d'Urgell</h4>
-        <h4>gul.com</h4>
+        <h3 className="font-bold">{name} {surname}</h3>
+        <h4>{dni}</h4>
+        <h4>{address}</h4>
+        <h4>{city} {cp}</h4>
+        <h4>{emailApp}</h4>
       </div>
 
      

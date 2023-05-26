@@ -1,22 +1,38 @@
-import { ReactNode, createContext, useState } from "react";
+import { ChangeEvent, ReactNode, createContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 
 interface props {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export type FacturappContextType = {
+  iduser: number,
+  setIduser(data: number): void;
   name: string;
-  setName: (value: string) => void;
+  setName:ChangeEvent<HTMLInputElement>;
+  surname: string;
+  setSurname: ChangeEvent<HTMLInputElement>;
+  emailApp: string;
+  setEmailApp: ChangeEvent<HTMLInputElement>;
+  dni: string;
+  setDni: ChangeEvent<HTMLInputElement>;
+  address: string,
+  setAddress: ChangeEvent<HTMLInputElement>;
+  city: string;
+  setCity: ChangeEvent<HTMLInputElement>;
+  cp: string;
+  setCp: ChangeEvent<HTMLInputElement>;
+  bankNumber: string;
+  setBankNumber: ChangeEvent<HTMLInputElement>;
 };
 
 export const FacturappContext = createContext({});
 
 export function FacturappContextProvider({ children }: props) {
   const [iduser, setIduser] = useState<number>(0);
-  const [name, setName] = useState<string>("");
-  const [surname, setSurname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>('');
+  const [surname, setSurname] = useState<string>('');
+  const [emailApp, setEmailApp] = useState<string>("");
   const [dni, setDni] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [city, setCity] = useState<string>("");
@@ -32,8 +48,8 @@ export function FacturappContextProvider({ children }: props) {
         setName,
         surname,
         setSurname,
-        email,
-        setEmail,
+        emailApp,
+        setEmailApp,
         dni,
         setDni,
         address,
