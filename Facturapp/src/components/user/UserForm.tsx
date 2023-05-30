@@ -2,31 +2,62 @@ import React, { useContext, useState } from "react";
 
 import InputForm from "../elements/input-element";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function UserForm() {
+
+  const navigate = useNavigate();
+
   const {
     name,
     setName,
     surname,
     setSurname,
     address,
-    bankNumber,
+    banknumber,
     city,
     cp,
     dni,
     emailApp,
     iduser,
     setAddress,
-    setBankNumber,
+    setBanknumber,
     setCity,
     setCp,
     setDni,
     setEmailApp,
   } = useContext(FacturappContext) as FacturappContextType;
 
+  const updateUser = async() => {
+    let data = {
+      iduser,
+      name,
+      surname,
+      emailApp,
+      dni,
+      banknumber,
+      address,
+      city,
+      cp
+    }
+
+    let result = await axios({
+      url: 'http://localhost:3000/user/edituser',
+      method: 'put',
+      data: data
+    })
+    if(result.data.result === 0) {
+      console.log(result.data.message)
+    } else {
+      navigate('/user')
+    }
+  }
+
   return (
     <div className="">
       <h1 className="text-center text-4xl my-4">Mi Perfil</h1>
+      <>
       <div className="flex flex-col text-center items-center bg-slate-100">
         <div>
           <label className="px-2" htmlFor="username">
@@ -53,7 +84,7 @@ export function UserForm() {
         </div>
         <div>
           <label htmlFor="numcuenta">Cuenta Bancària </label>
-          <InputForm id="numcuenta" type="text" value={bankNumber} onChange={setBankNumber} />
+          <InputForm id="numcuenta" type="text" value={banknumber} onChange={setBanknumber} />
         </div>
         <div>
           <label htmlFor="domicilio">Domicilio </label>
@@ -67,9 +98,12 @@ export function UserForm() {
           <label htmlFor="cp"> Código Postal </label>
           <InputForm id="cp" type="text" value={cp} onChange={setCp} />
         </div>
-      </div>
+      </div></>
       <div className="flex justify-center mt-10">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-md">
+        <button 
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-md"
+        onClick={updateUser}
+        >
           Actualizar Perfil
         </button>
       </div>

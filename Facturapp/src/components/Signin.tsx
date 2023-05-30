@@ -9,7 +9,7 @@ const [email, setEmail] = useState('');
 const [password, setPassword] = useState('')
 const navigate = useNavigate();
 
-const {setIduser, setAddress, setBankNumber, setCity, setCp, setDni, setEmailApp, setName, setSurname } = useContext(FacturappContext) as FacturappContextType;
+const {setIduser, setAddress, setBanknumber, setCity, setCp, setDni, setEmailApp, setName, setSurname } = useContext(FacturappContext) as FacturappContextType;
 
 const handleLogin = async () => {
   let data = {
@@ -22,10 +22,10 @@ const handleLogin = async () => {
     method: 'post',
     data: data
   })
-  console.log(result)
+  
   let user:UserAppI = result.data.appUser;
   let {address, banknumber, city,cp, dni,iduser,name,surname,} = user
-  console.log(user)
+  
 
   if(!user){
     console.log('Axios: usuario no encontrado')
@@ -34,12 +34,12 @@ const handleLogin = async () => {
     setSurname(surname),
     setDni(dni),
     setAddress(address),
-    setBankNumber(banknumber),
+    setBanknumber(banknumber),
     setCp(cp),
     setIduser(iduser),
     setCity(city),
     setEmailApp(email),
-    setTimeout(() => navigate('/user'), 3000)
+    setTimeout(() => navigate('/user'), 500)
   }
 
 }
@@ -90,7 +90,7 @@ const handleLogin = async () => {
 
     <p className="mt-10 text-center text-sm text-gray-500">
       Aún no estás registrado? 
-      <Link to={'/signup'}><a className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">   Hazlo en un solo paso!</a></Link>
+      <Link to={'/signup'} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">   Hazlo en un solo paso!</Link>
     </p>
   </div>
 </div>

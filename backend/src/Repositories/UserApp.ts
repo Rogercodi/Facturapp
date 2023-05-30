@@ -1,7 +1,7 @@
 import { UserAppI,sqlUserI } from "../app-types/user-types";
 
 
-export class User implements UserAppI {
+export class UserApp implements UserAppI {
   readonly iduser: number;
   readonly name: string;
   readonly surname: string;

@@ -10,8 +10,10 @@ export class getInvoicesController {
 
     public async getMyInvoices (req: Request, res: Response, next: NextFunction) {
         try {
-            const { idusuario } = req.body
-            const myInvoices = await this.userRepository.getMyInvoices(idusuario)
+            const { iduser } = req.body
+            console.log(iduser)
+            const myInvoices = await this.userRepository.getMyInvoices(iduser)
+            console.log(myInvoices)
             return res.send({message: 'Your Invoices', myInvoices}) 
           } catch (error) {
             console.log(error)

@@ -1,32 +1,44 @@
 import { API } from "../API";
-import { IInvoice } from "../app-types/invoice-type";
+import { IAppInvoice, IInvoice } from "../app-types/invoice-type";
 import { IPayer } from "../app-types/payer-type";
 import { UserAppI, sqlUserI } from "../app-types/user-types";
 import { IUserSqlRepository } from "../app-types/user-repository-type";
+import { AppInvoice } from "./Invoice";
+import { AppPayer } from "./Payer";
+import { IAppPayer } from "../app-types/payer-type";
 
 export class UserSqlRepository implements IUserSqlRepository {
   constructor() {}
 
   // MY INVOICES
-  async getMyInvoices(id: number): Promise<IInvoice[]> {
+  async getMyInvoices(id: number): Promise<AppInvoice[]> {
     let text = "SELECT * FROM invoices i WHERE i.idusuario = $1";
     let values = [id];
     let myInvoices: IInvoice[] = (await API.poolConnection.query(text, values))
       .rows;
-    return myInvoices;
+    let myAppInvoices:IAppInvoice[] = []
+    myInvoices.forEach((invoice: IInvoice) => {
+      myAppInvoices.push(new AppInvoice(invoice));
+    })
+    return myAppInvoices;
   }
 
   // MY PAYERS
-  async getMyPayers(id: number): Promise<IPayer[]> {
+  async getMyPayers(id: number): Promise<AppPayer[]> {
     let text = "SELECT * FROM payers p WHERE p.idusuario = $1";
     let values = [id];
     let myPayers: IPayer[] = (await API.poolConnection.query(text, values))
       .rows;
-    return myPayers;
+    let myAppPayers: IAppPayer[] = [];
+    myPayers.forEach((payer: IPayer) => {
+      myAppPayers.push(new AppPayer(payer))
+    })
+
+    return myAppPayers;
   }
 
   // NEW INVOICE
-  async newInvoice(invoice: IInvoice): Promise<number> {
+  async newInvoice(invoice: IAppInvoice): Promise<number> {
     let {
       base,
       body,
@@ -34,8 +46,8 @@ export class UserSqlRepository implements IUserSqlRepository {
       irpf,
       iva,
       total,
-      totalIrpf,
-      totalIva,
+      totalirpf,
+      totaliva,
       idpayer,
       idusuario,
     } = invoice;
@@ -44,9 +56,9 @@ export class UserSqlRepository implements IUserSqlRepository {
     let values = [
       base,
       iva,
-      totalIva,
+      totaliva,
       irpf,
-      totalIrpf,
+      totalirpf,
       body,
       fecha,
       total,
@@ -62,7 +74,7 @@ export class UserSqlRepository implements IUserSqlRepository {
   }
 
   // NEW PAYER
-  async newPayer(payer: IPayer): Promise<number> {
+  async newPayer(payer: IAppPayer): Promise<number> {
     let { nombre, apellidos, email, nif, domicilio, poblacion, cp, idusuario } =
       payer;
     let text =

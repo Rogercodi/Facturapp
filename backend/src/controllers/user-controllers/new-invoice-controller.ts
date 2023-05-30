@@ -14,6 +14,7 @@ export class invoiceController {
     try {
       const newInvoice: IInvoice = req.body;
       const result: number = await this.userRepository.newInvoice(newInvoice);
+      console.log(result)
       res.send({ message: "New invoice added successfully", result });
     } catch (error) {
       console.log(error);

@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
 
@@ -8,6 +9,8 @@ function Signup() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const registerUser = async() => {
         let user = {
@@ -81,7 +84,8 @@ function Signup() {
         type="submit" 
         onClick={(e) => {
           e.preventDefault();
-          registerUser()
+          registerUser();
+          navigate('/');
         }}
         className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Registrarse</button>
       </div>

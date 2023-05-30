@@ -1,8 +1,13 @@
+import { useContext, useState } from "react";
+import { FacturappContext, FacturappContextType } from "../../context/Context";
+import { IAppInvoice } from "../../../../backend/src/app-types/invoice-type";
 
 
 function MyInvoices() {
   
+// const [myAppInvoices, setmyAppInvoices] = useState();
 
+const {invoices} = useContext(FacturappContext) as FacturappContextType;
 
   return (
     <div className="flex flex-col mt-10">
@@ -12,6 +17,12 @@ function MyInvoices() {
             <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
               <thead>
                 <tr>
+                <th
+                    scope="col"
+                    className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
+                  >
+                    #
+                  </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
@@ -63,9 +74,12 @@ function MyInvoices() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {/* {loader.map((item) => {
+                {invoices.map((item: IAppInvoice, index: number) => {
                   return (
-                    <tr>
+                    <tr key={index+1}>
+                      <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-gray-200">
+                        {index+1}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-gray-200">
                         {item.idinvoice}
                       </td>
@@ -76,16 +90,16 @@ function MyInvoices() {
                         {item.body}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
-                        {item.base}
+                        {item.base + '€'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
-                        {item.totaliva}
+                        {item.totaliva + '€'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
-                        {item.totalirpf}
+                        {item.totalirpf + '€'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
-                        {item.total}
+                        {item.total + '€'}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                         
@@ -99,7 +113,7 @@ function MyInvoices() {
                       </td>
                     </tr>
                   );
-                })} */}
+                })}
               </tbody>
             </table>
           </div>

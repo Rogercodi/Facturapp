@@ -13,6 +13,7 @@ export class payerController {
     public async newPayer (req: Request, res: Response, next: NextFunction) {
         try {
             const newPayer: IPayer = req.body
+            console.log(newPayer)
             const result = await this.userRepository.newPayer(newPayer);
             res.send({message: 'New payer added successfully', result})
         } catch (error) {

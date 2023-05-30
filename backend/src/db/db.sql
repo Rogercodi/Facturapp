@@ -29,7 +29,7 @@ CREATE TABLE payers (
     REFERENCES users(idusuario)
 );
 
-INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp, idusuario) VALUES ('Igns', 'Test1 Test3', 'igns@test.com', '78787878B', 'C/Esdevenidor', 'Ivars', 25260, 1);
+INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp, idusuario) VALUES ('Igns', 'Test1 Test3', 'igns@test.com', '78787878B', 'C/Esdevenidor', 'Ivars', 25260, 2);
 
 CREATE TABLE invoices (
     idinvoice serial not null,
@@ -60,6 +60,6 @@ INSERT INTO invoices (
     fecha,
     total,
     idpayer,
-    idusuario) VALUES (1500, 10, 15, 10, 15, 'Concert A', '2023-05-10', 1500, 1, 1);
+    idusuario) VALUES (1500, 10, 15, 10, 15, 'Concert A', '2023-05-10', 1500, 1, 2);
 
     UPDATE invoices SET base = 1000 ON invoices.idusuario = 1;

@@ -13,8 +13,9 @@ export class getPayersController {
 
    public async getPayers (req: Request, res: Response, next: NextFunction) {
         try {
-          const { idusuario } = req.body
-          const myPayers = await this.userRepository.getMyPayers(idusuario)
+          const { iduser } = req.body
+          console.log(iduser)
+          const myPayers = await this.userRepository.getMyPayers(iduser)
           return res.send({message: 'Your Payers', myPayers}) 
         } catch (error) {
           console.log(error)

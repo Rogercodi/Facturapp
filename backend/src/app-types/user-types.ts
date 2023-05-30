@@ -4,7 +4,7 @@ export interface sqlUserI {
     apellidos: string;
     email: string;
     dni: string;
-    passwordu: string;
+    passwordu?: string;
     domicilio: string;
     poblacion: string;
     cp: number;

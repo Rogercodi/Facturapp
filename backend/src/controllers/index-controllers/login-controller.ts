@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
-import { User } from "../../Repositories/User";
+import { UserApp } from "../../Repositories/UserApp";
 import { UserAppI, sqlUserI } from "../../app-types/user-types";
 
 export class LoginController {
@@ -18,7 +18,7 @@ export class LoginController {
           req.logIn(user, (err) => {
             if (err) throw err;
             console.log('user',user)
-            let appUser: UserAppI = new User(user)
+            let appUser: UserAppI = new UserApp(user)
             console.log('appuser', appUser)
             res.status(201).send({ message: "Bienvenido!", appUser });
           });

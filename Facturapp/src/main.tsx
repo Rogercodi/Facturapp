@@ -10,14 +10,24 @@ import UserNav from "./components/user/UserNav.tsx";
 import MyInvoices from "./components/user/MyInvoices.tsx";
 import MyPayers from "./components/user/MyPayers.tsx";
 import axios from "axios";
-import { FacturappContextProvider } from "./context/Context.tsx";
+import { FacturappContext, FacturappContextProvider, FacturappContextType } from "./context/Context.tsx";
 import { UserForm } from "./components/user/UserForm.tsx";
 import { PayerForm } from "./components/user/PayerForm.tsx";
+import { useContext } from "react";
+
+// const {iduser} = useContext(FacturappContext) as FacturappContextType;
+
+
+//
 
 const router = createBrowserRouter([
 {
   path: '/',
   element: <Landing />
+},
+{
+  path: '/signup',
+  element: <Signup />
 },
 {
   path: '/signin',
@@ -37,23 +47,31 @@ const router = createBrowserRouter([
     },
     {
         path: '/user/newinvoice',
-        element: <InvoiceForm />
+        element: [<UserNav />, <InvoiceForm />]
       },
       {
         path: '/user/myinvoices',
-        element: <MyInvoices />
+        element: [<UserNav />, <MyInvoices />],
+        // loader: async () => {
+        //   let result = axios({
+        //     url: 'http://localhost:3000/myinvoices',
+        //     method: 'post',
+        //     data: iduser
+        //   });
+        //   return result
+        // }
       },
       {
         path:'/user/newpayer',
-        element: <PayerForm />
+        element: [<UserNav />, <PayerForm />]
       },
       {
         path: '/user/mypayers',
-        element: <MyPayers />
+        element: [<UserNav />, <MyPayers />]
       },
       {
         path: '/user/myprofile',
-        element: <UserForm />
+        element: [<UserNav />, <UserForm />]
       }
   ]
 }
@@ -66,27 +84,4 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 );
 
 
-// {
-//   path: '/user',
-//   element: <App />
-// },
-// {
-//   path: '/user/newinvoice',
-//   element: <InvoiceForm />
-// },
-// {
-//   path: '/user/myinvoices',
-//   element: <MyInvoices />
-// },
-// {
-//   path:'/user/newpayer',
-//   element: <PayerForm />
-// },
-// {
-//   path: '/user/mypayers',
-//   element: <MyPayers />
-// },
-// {
-//   path: '/user/myprofile',
-//   element: <UserForm />
-// }
+
