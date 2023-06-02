@@ -16,13 +16,11 @@ export class UpdateUserController {
     try {
       let user: UserAppI = req.body;
       let toUpdateUser = new UserSql(user)
-      console.log('appuser', user)
-      console.log("updateuser", toUpdateUser);
       let result = await this.userRepository.updateUser(toUpdateUser);
       if (result === 1) {
         res.send({ message: "User successfully updated", result });
       } else {
-        res.send({ message: 'Update failed, try again', result})
+        res.send({ message: 'Update failed, try again'})
       }
     } catch (error) {
       console.log(error);

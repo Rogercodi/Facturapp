@@ -1,7 +1,9 @@
-import { useContext, useState } from "react";
-import { FacturappContext, FacturappContextType } from "../../context/Context";
-import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
+import { useContext } from "react";
+
 import { useNavigate } from "react-router-dom";
+import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
+import { FacturappContext, FacturappContextType } from "../../context/Context";
+
 
 function MyPayers() {
   const { payers } = useContext(FacturappContext) as FacturappContextType;
@@ -74,7 +76,7 @@ function MyPayers() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {payers.map((item: IAppPayer, index: number) => {
+                  {payers?.map((item: IAppPayer, index: number) => {
                     return (
                       <tr key={index + 1}>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-gray-200">

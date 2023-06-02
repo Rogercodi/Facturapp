@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 interface props {
     children?: ReactNode;
-    onChange: ChangeEvent<HTMLInputElement>;
+    onChange(data: any): void;
     value?: string;
     id: string;
     type: string

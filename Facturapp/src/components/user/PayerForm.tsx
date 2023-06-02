@@ -1,12 +1,14 @@
-import  { useContext, useState } from "react";
-import InputForm from "../elements/input-element";
 import axios from "axios";
+import  { useContext, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
-import { useNavigate } from "react-router-dom";
+import InputForm from "../elements/input-element";
+
 
 export function PayerForm() {
-  const [nombre, setNombre] = useState<string>("");
+  const [nombre, setNombre] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [email, setEmail] = useState("");
   const [nif, setNif] = useState("");
@@ -49,7 +51,8 @@ export function PayerForm() {
           <label className="px-2" htmlFor="username">
             Nombre
           </label>
-          <InputForm id="nombre" type="text" onChange={setNombre} />
+          <InputForm id="nombre" type="text" 
+          onChange={setNombre} />
         </div>
         <div>
           <label htmlFor="apellidos">Apellidos </label>

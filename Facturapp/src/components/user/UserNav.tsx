@@ -3,12 +3,14 @@ import { useContext } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 
+
+
 function UserNav() {
   const { iduser, setInvoices, payers, setPayers } = useContext(
     FacturappContext
   ) as FacturappContextType;
 
-  const navigate = useNavigate();
+  
 
   const myInvoices = async () => {
     let data = {
@@ -17,10 +19,11 @@ function UserNav() {
     let result = await axios({
       url: "http://localhost:3000/user/myinvoices",
       method: "post",
-      data: data,
+      data: data
     });
+    console.log(result)
 
-    setInvoices(result.data.myInvoices);
+    setInvoices(result.data.appInvoices);
   };
 
   const myPayers = async () => {
@@ -30,7 +33,7 @@ function UserNav() {
       method: "post",
       data: data,
     });
-    setPayers(result.data.myPayers)
+    setPayers(result.data.appPayers)
   };
 
   return (

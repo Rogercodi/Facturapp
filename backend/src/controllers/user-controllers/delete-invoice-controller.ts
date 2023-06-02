@@ -3,23 +3,25 @@ import { UserSqlRepository } from "../../Repositories/UserSqlRepositories";
 import { IAppInvoice, IInvoice } from "../../app-types/invoice-type";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
 import { Request, Response, NextFunction } from "express";
-export class getInvoicesController {
+
+export class DeleteInvoicesController {
     private userRepository: IUserSqlRepository;
 
     constructor(){
         this.userRepository = new UserSqlRepository();
     };
 
-    public async getMyInvoices (req: Request, res: Response, next: NextFunction) {
+    public async deleteInvoice (req: Request, res: Response, next: NextFunction) {
         try {
-            const { iduser } = req.body
-            const myInvoices: IInvoice[] = await this.userRepository.getMyInvoices(iduser);
-            const appInvoices: IAppInvoice[] = [];
-            myInvoices.map((invoice: IInvoice) => {
-              appInvoices.push(new AppInvoice(invoice))
-            })
-           
-            return res.send({message: 'Your Invoices', appInvoices}) 
+            console.log('body', req.body)
+            const { idInvoice } = req.body;
+            let result = await this.userRepository.deleteInvoice(idInvoice)
+
+            if(result === 0){
+                return res.send({message: 'Invoice not found'})
+            } else {
+            return res.send({message: 'Deleted!', result}) 
+            }
           } catch (error) {
             console.log(error)
             next();

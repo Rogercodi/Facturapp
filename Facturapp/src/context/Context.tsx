@@ -9,27 +9,27 @@ interface props {
 
 export type FacturappContextType = {
   iduser: number,
-  setIduser(data: number): void;
+  setIduser: React.Dispatch<React.SetStateAction<number>>
   name: string;
-  setName:ChangeEvent<HTMLInputElement>;
+  setName:React.Dispatch<React.SetStateAction<string>>;
   surname: string;
-  setSurname: ChangeEvent<HTMLInputElement>;
+  setSurname: React.Dispatch<React.SetStateAction<string>>;
   emailApp: string;
-  setEmailApp: ChangeEvent<HTMLInputElement>;
+  setEmailApp: React.Dispatch<React.SetStateAction<string>>;
   dni: string;
-  setDni: ChangeEvent<HTMLInputElement>;
+  setDni: React.Dispatch<React.SetStateAction<string>>;
   address: string,
-  setAddress: ChangeEvent<HTMLInputElement>;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
   city: string;
-  setCity: ChangeEvent<HTMLInputElement>;
+  setCity: React.Dispatch<React.SetStateAction<string>>;
   cp: string;
-  setCp: ChangeEvent<HTMLInputElement>;
+  setCp: React.Dispatch<React.SetStateAction<number>>;
   banknumber: string;
-  setBanknumber:ChangeEvent<HTMLInputElement>;
+  setBanknumber:React.Dispatch<React.SetStateAction<string>>;
   invoices: IAppInvoice[];
-  setInvoices(data: any): void;
+  setInvoices: React.Dispatch<React.SetStateAction<IAppInvoice[]>>
   payers: IAppPayer[];
-  setPayers(data: any): void;
+  setPayers: React.Dispatch<React.SetStateAction<IAppPayer[]>>;
 };
 
 export const FacturappContext = createContext({});

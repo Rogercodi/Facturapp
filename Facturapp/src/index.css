@@ -2,3 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+.page {
+    width: 21cm ;
+    max-height: 29.7cm ;
+    /* padding: 2cm; */
+    margin: 0 auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    
+  }
+
+  .toptriangle {
+    width: 21cm;
+    height: 14cm;
+    background: linear-gradient(121deg, rgba(81,201,156,1) 27%, rgba(79,199,214,1) 75%);
+    clip-path: polygon(0 0, 100% 0, 100% 65%, 0 88%);
+  }
+  
+  .bottomtriangle{
+    width: 21cm;
+    height: 3cm;
+    background: linear-gradient(323deg, rgba(81,201,156,1) 27%, rgba(79,199,214,1) 75%);
+    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+    position: relative;
+    bottom: -0.9cm;
+
+  }
+ 
+
+

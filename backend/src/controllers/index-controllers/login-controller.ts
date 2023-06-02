@@ -17,9 +17,8 @@ export class LoginController {
         } else {
           req.logIn(user, (err) => {
             if (err) throw err;
-            console.log('user',user)
-            let appUser: UserAppI = new UserApp(user)
-            console.log('appuser', appUser)
+            
+            let appUser: UserAppI = new UserApp(user);
             res.status(201).send({ message: "Bienvenido!", appUser });
           });
         }

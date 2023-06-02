@@ -1,7 +1,7 @@
 import { IAppPayer, IPayer } from "./payer-type";
 import { sqlUserI } from "./user-types";
 import { IAppInvoice, IInvoice } from "./invoice-type";
-import { AppPayer } from "../Repositories/Payer";
+import { AppPayer } from "../Repositories/AppPayer";
 
 
 export interface IUserSqlRepository {
@@ -11,4 +11,5 @@ export interface IUserSqlRepository {
     newPayer(payer: IPayer): Promise<number>;
     updateUser(user: sqlUserI): Promise<number>;
     updatePayer(payer: IPayer): Promise<number>;
+    deleteInvoice(id: number): Promise<number>;
   }

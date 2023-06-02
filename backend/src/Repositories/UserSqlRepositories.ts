@@ -3,8 +3,8 @@ import { IAppInvoice, IInvoice } from "../app-types/invoice-type";
 import { IPayer } from "../app-types/payer-type";
 import { UserAppI, sqlUserI } from "../app-types/user-types";
 import { IUserSqlRepository } from "../app-types/user-repository-type";
-import { AppInvoice } from "./Invoice";
-import { AppPayer } from "./Payer";
+import { AppInvoice } from "./AppInvoice";
+import { AppPayer } from "./AppPayer";
 import { IAppPayer } from "../app-types/payer-type";
 
 export class UserSqlRepository implements IUserSqlRepository {
@@ -18,8 +18,9 @@ export class UserSqlRepository implements IUserSqlRepository {
       .rows;
     let myAppInvoices:IAppInvoice[] = []
     myInvoices.forEach((invoice: IInvoice) => {
-      myAppInvoices.push(new AppInvoice(invoice));
+      myAppInvoices.push(new AppInvoice(invoice));    
     })
+  
     return myAppInvoices;
   }
 
@@ -165,5 +166,13 @@ export class UserSqlRepository implements IUserSqlRepository {
 
     let result = (await API.poolConnection.query(text, values)).rowCount;
     return result;
+  }
+
+  //DELETE INVOICE
+  public async deleteInvoice(id: number):Promise<number>{
+    const text = 'DELETE FROM invoices i WHERE i.idinvoice = $1 ';
+    const values= [id]
+    let result = await (await API.poolConnection.query(text, values)).rowCount
+    return result
   }
 }

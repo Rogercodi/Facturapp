@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
+import  { useContext } from "react";
 
-import InputForm from "../elements/input-element";
-import { FacturappContext, FacturappContextType } from "../../context/Context";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FacturappContext, FacturappContextType } from "../../context/Context";
+import InputForm from "../elements/input-element";
 
 export function UserForm() {
 
@@ -63,7 +64,7 @@ export function UserForm() {
           <label className="px-2" htmlFor="username">
             Nombre
           </label>
-          <InputForm id="nombre" type="text" value={name} onChange={setName} />
+          <InputForm id="nombre" type="text" value={name} onChange={() => setName} />
         </div>
         <div>
           <label htmlFor="apellidos">Apellidos </label>
@@ -71,32 +72,32 @@ export function UserForm() {
             id="apellidos"
             type="text"
             value={surname}
-            onChange={setSurname}
+            onChange={() => setSurname}
           />
         </div>
         <div>
           <label htmlFor="email">Correo Electrónico </label>
-          <InputForm id="email" type="email" value={emailApp} onChange={setEmailApp} />
+          <InputForm id="email" type="email" value={emailApp} onChange={() => setEmailApp} />
         </div>
         <div>
           <label htmlFor="dni">DNI </label>
-          <InputForm id="dni" type="text" value={dni} onChange={setDni}/>
+          <InputForm id="dni" type="text" value={dni} onChange={() => setDni}/>
         </div>
         <div>
           <label htmlFor="numcuenta">Cuenta Bancària </label>
-          <InputForm id="numcuenta" type="text" value={banknumber} onChange={setBanknumber} />
+          <InputForm id="numcuenta" type="text" value={banknumber} onChange={() =>  setBanknumber} />
         </div>
         <div>
           <label htmlFor="domicilio">Domicilio </label>
-          <InputForm id="domicilio" type="text" value={address} onChange={setAddress} />
+          <InputForm id="domicilio" type="text" value={address} onChange={() => setAddress} />
         </div>
         <div>
           <label htmlFor="poblacion">Población </label>
-          <InputForm id="poblacion" type="text" value={city} onChange={setCity} />
+          <InputForm id="poblacion" type="text" value={city} onChange={() => setCity} />
         </div>
         <div>
           <label htmlFor="cp"> Código Postal </label>
-          <InputForm id="cp" type="text" value={cp} onChange={setCp} />
+          <InputForm id="cp" type="text" value={cp} onChange={() => setCp} />
         </div>
       </div></>
       <div className="flex justify-center mt-10">
