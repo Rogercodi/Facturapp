@@ -12,6 +12,13 @@ export class AppInvoice implements IAppInvoice {
     readonly total: number;
     readonly idpayer: number;
     readonly idusuario: number;
+    readonly nombre?: string | undefined;
+    readonly apellidos?: string | undefined;
+    readonly email?: string | undefined;
+    readonly nif?: string | undefined;
+    readonly domicilio?: string | undefined;
+    readonly poblacion?: string | undefined;
+    readonly cp?: string | undefined;
     
     
     constructor(invoice: IInvoice) {
@@ -22,10 +29,16 @@ export class AppInvoice implements IAppInvoice {
       this.body = invoice.body;
       this.total = invoice.total;
       this.totalirpf = invoice.totalirpf;
-      
       this.irpf = invoice.irpf;
       this.fecha = invoice.fecha;
       this.idpayer = invoice.idpayer;
-      this.idusuario = invoice.idusuario
+      this.idusuario = invoice.idusuario;
+      this.nombre = invoice.nombre;
+      this.apellidos = invoice.apellidos;
+      this.email = invoice.email;
+      this.nif = invoice.nif;
+      this.domicilio = invoice.domicilio;
+      this.poblacion = invoice.poblacion;
+      this.cp = invoice.cp;
     };
   };

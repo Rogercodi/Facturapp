@@ -28,28 +28,19 @@ import Test from "./components/invoice/Test.tsx";
 //
 
 const router = createBrowserRouter([
-{
-  path: '/',
-  element: <Landing />
-},
 // {
-//   path: '/test',
-//   element: <InvoicePDF base={0} iva={0} irpf={0} body={""} fecha={""} totaliva={0} totalirpf={0} total={0} user={{name: 'Roger', address: '', banknumber: '', city: '', correo: '', cp:8, dni:'', surname:'', iduser:2}} payerdata={{nombre: 'Roger', apellidos:'', cp: 25, domicilio: '', email: '', nif:'', poblacion:'', idusuario:1}} />
+//   path: '/',
+//   element: <Landing />
 // },
 {
-  path: '/test2',
-  element: <InvoiceWeb base={0} iva={0} irpf={0} body={""} fecha={""} totaliva={0} totalirpf={0} total={0} user={{name: 'Roger', address: '', banknumber: '', city: '', correo: '', cp:8, dni:'', surname:'', iduser:2}} payerdata={{nombre: 'Roger', apellidos:'', cp: 25, domicilio: '', email: '', nif:'', poblacion:'', idusuario:1 }} />
-},
-  {
-  path: '/signup',
-  element: <Signup />
-},
-{
-  path: '/signin',
+  path: '/',
   element: <FacturappContextProvider />,
   children: [{
     path: '/signin',
     element: <Signin />
+  }, {
+    path: '/signup',
+    element: <Signup />
   }]
 },
 {
@@ -75,6 +66,10 @@ const router = createBrowserRouter([
       {
         path: '/user/mypayers',
         element: [<UserNav />, <MyPayers />]
+      },
+      {
+        path: '/user/updatepayer',
+        element: [<UserNav />, <PayerForm />]
       },
       {
         path: '/user/myprofile',

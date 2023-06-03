@@ -8,7 +8,7 @@ export interface IPayer {
     nif: string,
     domicilio: string,
     poblacion: string,
-    cp: number,
+    cp: string,
     idusuario: number
 }
 
@@ -20,6 +20,6 @@ export interface IAppPayer {
     nif: string,
     domicilio: string,
     poblacion: string,
-    cp: number,
+    cp: string,
     idusuario: number
 }

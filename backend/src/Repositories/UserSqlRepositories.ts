@@ -12,7 +12,7 @@ export class UserSqlRepository implements IUserSqlRepository {
 
   // MY INVOICES
   async getMyInvoices(id: number): Promise<AppInvoice[]> {
-    let text = "SELECT * FROM invoices i WHERE i.idusuario = $1";
+    let text = "SELECT * FROM invoices i LEFT JOIN payers p ON i.idpayer=p.idpayer WHERE i.idusuario = $1 " ;
     let values = [id];
     let myInvoices: IInvoice[] = (await API.poolConnection.query(text, values))
       .rows;
@@ -20,7 +20,7 @@ export class UserSqlRepository implements IUserSqlRepository {
     myInvoices.forEach((invoice: IInvoice) => {
       myAppInvoices.push(new AppInvoice(invoice));    
     })
-  
+    console.log(myAppInvoices)
     return myAppInvoices;
   }
 
@@ -138,20 +138,9 @@ export class UserSqlRepository implements IUserSqlRepository {
       idusuario,
     } = payer;
 
-    console.log(
-      idpayer,
-      nombre,
-      apellidos,
-      email,
-      nif,
-      domicilio,
-      poblacion,
-      cp,
-      idusuario
-    );
 
     let text =
-      "UPDATE payers p SET nombre = $2, apellidos = $3, email = $4, nif = $5, domicilio = $6, poblacion = $7, cp = $8, idusuario = $9 WHERE p.idpayer = $1  ";
+      "UPDATE payers p SET nombre = $2, apellidos = $3, email = $4, nif = $5, domicilio = $6, poblacion = $7, cp = $8, idusuario = $9 WHERE p.idpayer = $1";
     let values = [
       idpayer,
       nombre,
@@ -172,6 +161,14 @@ export class UserSqlRepository implements IUserSqlRepository {
   public async deleteInvoice(id: number):Promise<number>{
     const text = 'DELETE FROM invoices i WHERE i.idinvoice = $1 ';
     const values= [id]
+    let result = (await API.poolConnection.query(text, values)).rowCount
+    return result
+  }
+
+  //DELETE PAYER
+  public async deletePayer(id: number): Promise<number> {
+    const text = 'DELETE FROM payers p WHERE p.idpayer = $1';
+    const values = [id]
     let result = await (await API.poolConnection.query(text, values)).rowCount
     return result
   }

@@ -8,7 +8,7 @@ CREATE TABLE users (
     numcuenta VARCHAR(30),
     domicilio VARCHAR(30),
     poblacion VARCHAR(30),
-    cp INT,
+    cp VARCHAR(30),
     PRIMARY KEY(idusuario) 
 );
 
@@ -63,3 +63,11 @@ INSERT INTO invoices (
     idusuario) VALUES (1500, 10, 15, 10, 15, 'Concert A', '2023-05-10', 1500, 1, 2);
 
     UPDATE invoices SET base = 1000 ON invoices.idusuario = 1;
+
+    SELECT * FROM invoices i LEFT JOIN payers p ON i.idpayer=p.idpayer WHERE i.idusuario = 2; 
+
+
+    DELETE FROM payers p WHERE p.idpayer = 1 AND invoices WHERE invoices.idpayer = 1;
+
+
+    UPDATE payers SET nombre = 'TEST', apellidos =, email =, nif =, domicilio =, poblacion =, cp = WHERE payers.idpayer = 1;

@@ -20,14 +20,14 @@ export function UserForm() {
     city,
     cp,
     dni,
-    emailApp,
+    emailapp,
     iduser,
     setAddress,
     setBanknumber,
     setCity,
     setCp,
     setDni,
-    setEmailApp,
+    setEmailapp,
   } = useContext(FacturappContext) as FacturappContextType;
 
   const updateUser = async() => {
@@ -35,21 +35,21 @@ export function UserForm() {
       iduser,
       name,
       surname,
-      emailApp,
+      emailapp,
       dni,
       banknumber,
       address,
       city,
       cp
     }
-
+    console.log('DATA',data)
     let result = await axios({
       url: 'http://localhost:3000/user/edituser',
       method: 'put',
       data: data
     })
     if(result.data.result === 0) {
-      console.log(result.data.message)
+      // console.log(result.data.message)
     } else {
       navigate('/user')
     }
@@ -57,6 +57,7 @@ export function UserForm() {
 
   return (
     <div className="">
+     
       <h1 className="text-center text-4xl my-4">Mi Perfil</h1>
       <>
       <div className="flex flex-col text-center items-center bg-slate-100">
@@ -77,27 +78,27 @@ export function UserForm() {
         </div>
         <div>
           <label htmlFor="email">Correo Electrónico </label>
-          <InputForm id="email" type="email" value={emailApp} onChange={() => setEmailApp} />
+          <InputForm id="email" type="email" value={emailapp} onChange={setEmailapp} />
         </div>
         <div>
           <label htmlFor="dni">DNI </label>
-          <InputForm id="dni" type="text" value={dni} onChange={() => setDni}/>
+          <InputForm id="dni" type="text" value={dni} onChange={setDni}/>
         </div>
         <div>
           <label htmlFor="numcuenta">Cuenta Bancària </label>
-          <InputForm id="numcuenta" type="text" value={banknumber} onChange={() =>  setBanknumber} />
+          <InputForm id="numcuenta" type="text" value={banknumber} onChange={setBanknumber} />
         </div>
         <div>
           <label htmlFor="domicilio">Domicilio </label>
-          <InputForm id="domicilio" type="text" value={address} onChange={() => setAddress} />
+          <InputForm id="domicilio" type="text" value={address} onChange={setAddress} />
         </div>
         <div>
           <label htmlFor="poblacion">Población </label>
-          <InputForm id="poblacion" type="text" value={city} onChange={() => setCity} />
+          <InputForm id="poblacion" type="text" value={city} onChange={setCity} />
         </div>
         <div>
           <label htmlFor="cp"> Código Postal </label>
-          <InputForm id="cp" type="text" value={cp} onChange={() => setCp} />
+          <InputForm id="cp" type="text" value={cp} onChange={setCp} />
         </div>
       </div></>
       <div className="flex justify-center mt-10">

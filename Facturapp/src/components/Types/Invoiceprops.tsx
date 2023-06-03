@@ -11,5 +11,12 @@ export type Invoiceprops = {
     totalirpf: number;
     total: number;
     user: UserAppI;
-    payerdata: IAppPayer
+    payerdata?: IAppPayer;
+    pnombre: string;
+    papellidos: string;
+    pemail: string;
+    pnif: string;
+    pdomicilio: string;
+    ppoblacion: string;
+    pcp: string;
   }

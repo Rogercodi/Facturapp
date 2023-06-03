@@ -5,47 +5,57 @@ import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function MyInvoices() {
+  const navigate = useNavigate();
+
   const {
     invoices,
-    payers,
     name,
     address,
-    banknumber,
     city,
     cp,
     dni,
-    emailApp,
+    emailapp,
     surname,
+    iduser,
+    banknumber
   } = useContext(FacturappContext) as FacturappContextType;
 
   const [invoice, setInvoice] = useState<IAppInvoice>();
-  const [idInvoice, setIdInvoice] = useState<number | undefined>(0);
+  const [invoiceState, setInvoiceState] = useState('Generada' || 'Enviada')
 
-  useEffect(() => {
-    setIdInvoice(invoice?.idinvoice)
-  
-  }, [invoice])
-  
+
+ 
+
+  // useEffect(() => {
+  //   setIdInvoice(invoice?.idinvoice);
+  // }, [invoice]);
 
   const [verWeb, setVerWeb] = useState(false);
 
-  const componentRef:any = useRef();
+  const componentRef: any = useRef();
 
-  const deleteInvoice = async () => {
-    console.log(idInvoice)
+  const deleteInvoice = async (idInvoice: number | undefined) => {
+    
     let result = await axios({
-      url: 'http://localhost:3000/user/deleteinvoice',
-      data: {idInvoice},
-      method: 'delete'
-    })
-    console.log(result)
-  }
+      url: "http://localhost:3000/user/deleteinvoice",
+      data: { idInvoice },
+      method: "delete",
+    });
+    console.log(result);
+    if (result.data.result === 1) {
+      navigate("/user");
+    }
+  };
+
+  
 
   return (
     <>
-      <div className="flex flex-col mt-10">
+      <div className="flex flex-col mt-10 mb-10
+      ">
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">
             <div className="border overflow-hidden dark:border-gray-700">
@@ -140,7 +150,6 @@ function MyInvoices() {
                           <button
                             onClick={() => {
                               setInvoice(item);
-                              // setIdInvoice(item.idinvoice)
                               setVerWeb(!verWeb);
                             }}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-1 rounded"
@@ -148,14 +157,19 @@ function MyInvoices() {
                             {verWeb ? "Ocultar Factura" : "Ver Factura"}
                           </button>
                           <button
-                          onClick={() => {
-                            deleteInvoice()
-                          }}
-                          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 rounded">
+                            onClick={() => {
+                              deleteInvoice(item.idinvoice);
+                            }}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mx-4 rounded"
+                          >
                             Eliminar
                           </button>
-                          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Estado
+                          <button 
+                          onClick={
+                            invoiceState === 'Generada' ? ()=> setInvoiceState('Enviada') : ()=>setInvoiceState('Generada') 
+                          }
+                          className= {invoiceState === 'Generada' ? "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" : "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"}>
+                            {invoiceState}
                           </button>
                         </td>
                       </tr>
@@ -169,7 +183,7 @@ function MyInvoices() {
       </div>
       <div>
         {/* INVOICE WEB */}
-        <div ref={componentRef} className="mt-10">
+        <div ref={componentRef} className="">
           {verWeb ? (
             <InvoiceWeb
               base={invoice?.base || 0}
@@ -180,9 +194,15 @@ function MyInvoices() {
               body={invoice?.body || " "}
               fecha={invoice?.fecha || " "}
               total={invoice?.total || 0}
-              // payer={}
-              user={{ name, surname, dni, address, cp, city, emailApp }}
-              // payerdata={}
+              user={{ name, surname, dni, address, cp, city, emailapp, iduser, banknumber }}
+              papellidos={invoice?.apellidos || ' '}
+              pnombre={invoice?.nombre || ' '}
+              pdomicilio={invoice?.domicilio || ' '}
+              pcp={invoice?.cp || ''}
+              pemail={invoice?.email || ''}
+              pnif={invoice?.nif || ''}
+              ppoblacion={invoice?.poblacion || ''}
+
             />
           ) : (
             ""

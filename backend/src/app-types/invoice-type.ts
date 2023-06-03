@@ -9,7 +9,14 @@ export interface IInvoice {
     fecha: string,
     total: number,
     idpayer: number,
-    idusuario: number
+    idusuario: number,
+    nombre?: string,
+    apellidos?: string,
+    email?: string,
+    nif?: string,
+    domicilio?: string,
+    poblacion?: string,
+    cp?: string
   }
   
 
@@ -24,7 +31,14 @@ export interface IInvoice {
     fecha: string,
     total: number,
     idpayer: number,
-    idusuario: number
+    idusuario: number,
+    nombre?: string,
+    apellidos?: string,
+    email?: string,
+    nif?: string,
+    domicilio?: string,
+    poblacion?: string,
+    cp?: string
   }
 
 

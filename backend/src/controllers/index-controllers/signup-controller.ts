@@ -8,8 +8,16 @@ export class SignUpController {
   async signUp(req: Request, res: Response, next: NextFunction) {
     try {
       let { nombre, apellidos, email, password, confirmPassword } = req.body;
+
+      console.log(req.body);
       if (password !== confirmPassword) {
-        res.send({ message: "Las contraseñas no coinciden" });
+        return res.send({ redmessage: "Las contraseñas no coinciden" });
+       
+      }
+
+      if (nombre.length < 1 || apellidos.length < 1 || email.length < 1) {
+        return res.send({ redmessage: "Todos los campos son obligatorios" });
+        
       }
 
       let text = "SELECT * FROM users u WHERE u.email = $1";
@@ -17,7 +25,7 @@ export class SignUpController {
       let userCheck = await API.poolConnection.query(text, values);
 
       if (userCheck.rowCount > 0) {
-        res.send({ message: "El email ya esta registrado" });
+        res.send({ redmessage: "El email ya esta registrado" });
       } else {
         let hashed = await bcrypt.hash(password, 10);
         let text =
@@ -25,7 +33,7 @@ export class SignUpController {
         let values = [nombre, apellidos, email, hashed];
         let newUser = await API.poolConnection.query(text, values);
         if (newUser.rowCount === 1) {
-          res.send({ message: "Registrado correctamente!" });
+          res.send({ greenmessage: "Registrado correctamente!" });
         }
       }
     } catch (error) {

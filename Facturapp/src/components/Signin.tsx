@@ -3,13 +3,14 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { FacturappContext, FacturappContextType } from '../context/Context';
 import { UserAppI } from "../../../backend/src/app-types/user-types";
+import RedalertElement from './elements/Redalert-element';
 function Signin() {
 
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('')
 const navigate = useNavigate();
 
-const {setIduser, setAddress, setBanknumber, setCity, setCp, setDni, setEmailApp, setName, setSurname } = useContext(FacturappContext) as FacturappContextType;
+const {setIduser, setAddress, setBanknumber, setCity, setCp, setDni, setEmailapp, setName, setSurname } = useContext(FacturappContext) as FacturappContextType;
 
 const handleLogin = async () => {
   let data = {
@@ -30,6 +31,7 @@ const handleLogin = async () => {
   if(!user){
     console.log('Axios: usuario no encontrado')
   } else {
+    console.log(user)
     setName(name),
     setSurname(surname),
     setDni(dni),
@@ -38,7 +40,7 @@ const handleLogin = async () => {
     setCp(cp),
     setIduser(iduser),
     setCity(city),
-    setEmailApp(email),
+    setEmailapp(email),
     setTimeout(() => navigate('/user'), 500)
   }
 
@@ -48,6 +50,7 @@ const handleLogin = async () => {
 
   return (
     <div>
+      {/* {redMessage === '' ? '' : <RedalertElement redmessage={redMessage} onClick={clickError} />} */}
       <h1 className="flex justify-center text-5xl mt-10 font-bold">
         Bienvenido/a a Facturapp!
       </h1>

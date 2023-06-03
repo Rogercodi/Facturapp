@@ -8,7 +8,7 @@ export class UserSql implements sqlUserI {
     readonly dni: string;
     readonly domicilio: string;
     readonly poblacion: string;
-    readonly cp: number;
+    readonly cp: string;
     readonly numcuenta: string;
 
 
@@ -16,7 +16,7 @@ export class UserSql implements sqlUserI {
         this.idusuario = user.iduser;
         this.nombre= user.name;
         this.apellidos = user.surname;
-        this.email = user.correo;
+        this.email = user.emailapp;
         this.dni = user.dni;
         this.domicilio = user.address;
         this.poblacion = user.city;

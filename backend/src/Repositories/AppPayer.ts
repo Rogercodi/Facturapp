@@ -9,7 +9,7 @@ export class AppPayer implements IAppPayer {
     readonly nif: string;
     readonly domicilio: string;
     readonly poblacion: string;
-    readonly cp: number;
+    readonly cp: string;
     readonly idusuario: number;
 
     constructor(payer: IPayer){

@@ -8,14 +8,18 @@ interface props {
 }
 
 export type FacturappContextType = {
-  iduser: number,
-  setIduser: React.Dispatch<React.SetStateAction<number>>
+  redMessage: string;
+  setRedMessage: React.Dispatch<React.SetStateAction<string>>;
+  greenMessage: string;
+  setGreenMessage: React.Dispatch<React.SetStateAction<string>>;
+  iduser: number;
+  setIduser: React.Dispatch<React.SetStateAction<number>>;
   name: string;
   setName:React.Dispatch<React.SetStateAction<string>>;
   surname: string;
   setSurname: React.Dispatch<React.SetStateAction<string>>;
-  emailApp: string;
-  setEmailApp: React.Dispatch<React.SetStateAction<string>>;
+  emailapp: string;
+  setEmailapp: React.Dispatch<React.SetStateAction<string>>;
   dni: string;
   setDni: React.Dispatch<React.SetStateAction<string>>;
   address: string,
@@ -23,41 +27,50 @@ export type FacturappContextType = {
   city: string;
   setCity: React.Dispatch<React.SetStateAction<string>>;
   cp: string;
-  setCp: React.Dispatch<React.SetStateAction<number>>;
+  setCp: React.Dispatch<React.SetStateAction<string>>;
   banknumber: string;
   setBanknumber:React.Dispatch<React.SetStateAction<string>>;
   invoices: IAppInvoice[];
   setInvoices: React.Dispatch<React.SetStateAction<IAppInvoice[]>>
   payers: IAppPayer[];
   setPayers: React.Dispatch<React.SetStateAction<IAppPayer[]>>;
+  updatePayer: IAppPayer;
+  setUpdatePayer: React.Dispatch<React.SetStateAction<IAppPayer | null>>;
 };
 
 export const FacturappContext = createContext({});
 
 export function FacturappContextProvider({ children }: props) {
+  const [redMessage, setRedMessage] = useState<string>('');
+  const [greenMessage, setGreenMessage] = useState<string>('');
   const [iduser, setIduser] = useState<number>();
   const [name, setName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
-  const [emailApp, setEmailApp] = useState<string>("");
+  const [emailapp, setEmailapp] = useState<string>("");
   const [dni, setDni] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [city, setCity] = useState<string>("");
-  const [cp, setCp] = useState<number>();
+  const [cp, setCp] = useState<string>('');
   const [banknumber, setBanknumber] = useState<string>("");
   const [invoices, setInvoices] = useState([]);
   const [payers, setPayers] = useState([]);
+  const [updatePayer, setUpdatePayer] = useState<IAppPayer | null>();
 
   return (
     <FacturappContext.Provider
       value={{
+        redMessage,
+        setRedMessage,
+        greenMessage,
+        setGreenMessage,
         iduser,
         setIduser,
         name,
         setName,
         surname,
         setSurname,
-        emailApp,
-        setEmailApp,
+        emailapp,
+        setEmailapp,
         dni,
         setDni,
         address,
@@ -71,7 +84,9 @@ export function FacturappContextProvider({ children }: props) {
         invoices,
         setInvoices,
         payers,
-        setPayers
+        setPayers,
+        updatePayer,
+        setUpdatePayer
       }}
     >
       <Outlet />

@@ -8,6 +8,7 @@ import {
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
+import { useNavigate } from "react-router-dom";
 
 function InvoiceForm() {
   const [base, setBase] = useState(0);
@@ -20,7 +21,14 @@ function InvoiceForm() {
   const [total, setTotal] = useState(0);
   const [idpayer, setIdpayer] = useState(0);
 
-  const [payer, setPayer] = useState<IAppPayer | undefined>();
+  // const [payer, setPayer] = useState<IAppPayer | undefined>();
+  const [pnombre, setPnombre] = useState("");
+  const [papellidos, setPapellidos] = useState("");
+  const [pemail, setPemail] = useState("");
+  const [pnif, setPnif] = useState("");
+  const [pdomicilio, setPdomicilio] = useState("");
+  const [pcp, setPcp] = useState("");
+  const [ppoblacion, setPpoblacion] = useState("");
   const [verWeb, setVerWeb] = useState(false);
 
   const {
@@ -29,7 +37,7 @@ function InvoiceForm() {
     address,
     city,
     dni,
-    emailApp,
+    emailapp,
     cp,
     banknumber,
     iduser,
@@ -37,13 +45,21 @@ function InvoiceForm() {
   } = useContext(FacturappContext) as FacturappContextType;
 
   const idusuario = iduser;
+  const navigate = useNavigate();
 
   //SELECT PAYER
   useEffect(() => {
     if (idpayer > 0) {
       payers.map((payer: IAppPayer) => {
         if (idpayer === payer.idpayer) {
-          setPayer(payer);
+          // setPayer(payer);
+          setPnombre(payer.nombre);
+          setPapellidos(payer.apellidos);
+          setPemail(payer.email);
+          setPnif(payer.nif);
+          setPdomicilio(payer.domicilio);
+          setPpoblacion(payer.poblacion);
+          setPcp(payer.cp);
         }
       });
     }
@@ -85,7 +101,9 @@ function InvoiceForm() {
       data: invoice,
       timeout: 200,
     });
-    console.log(result);
+    if(result.data.result === 1){
+      navigate('/user')
+    }
   };
 
   // PDF GENERATOR
@@ -106,7 +124,7 @@ function InvoiceForm() {
             <h4>
               {city} {cp}
             </h4>
-            <h4>{emailApp}</h4>
+            <h4>{emailapp}</h4>
             <h4>{banknumber}</h4>
           </div>
 
@@ -135,14 +153,14 @@ function InvoiceForm() {
 
           <div>
             <h3 className="font-bold">
-              {payer?.nombre} {payer?.apellidos}
+              {pnombre} {papellidos}
             </h3>
-            <h4>{payer?.nif}</h4>
-            <h4>{payer?.domicilio}</h4>
+            <h4>{pnif}</h4>
+            <h4>{pdomicilio}</h4>
             <h4>
-              {payer?.poblacion} {payer?.cp}
+              {ppoblacion} {pcp}
             </h4>
-            <h4>{payer?.email}</h4>
+            <h4>{pemail}</h4>
           </div>
         </div>
 
@@ -214,7 +232,7 @@ function InvoiceForm() {
             }}
             className="border-2 border-solid border-slate-400 mb-4 rounded-lg"
             name="iva"
-            id="iva"
+            id="irpf"
           >
             <option selected>IRPF aplicable</option>
             <option value="2">2%</option>
@@ -272,7 +290,6 @@ function InvoiceForm() {
             Guardar Factura
           </button>
         </div>
-        
       </div>
 
       {/* INVOICE WEB */}
@@ -287,16 +304,33 @@ function InvoiceForm() {
             body={body}
             fecha={fecha}
             total={total}
-            payer={payer}
-            user={{ name, surname, dni, address, cp, city, emailApp }}
-            payerdata={payer}
+            // payer={payer}
+            user={{
+              name,
+              surname,
+              dni,
+              address,
+              cp,
+              city,
+              emailapp,
+              banknumber,
+              iduser,
+            }}
+            pnombre={pnombre}
+            papellidos={papellidos}
+            pemail={pemail}
+            pnif={pnif}
+            pdomicilio={pdomicilio}
+            ppoblacion={ppoblacion}
+            pcp={pcp}
           />
         ) : (
           ""
         )}
       </div>
       {/* PDF BUTTON */}
-      {verWeb ? <div className="flex justify-center mt-10">
+      {verWeb ? (
+        <div className="flex justify-center mt-10">
           <ReactToPrint
             trigger={() => (
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded m-2">
@@ -305,7 +339,10 @@ function InvoiceForm() {
             )}
             content={() => componentRef.current}
           />
-        </div> : ' '}
+        </div>
+      ) : (
+        " "
+      )}
     </>
   );
 }

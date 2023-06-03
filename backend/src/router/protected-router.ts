@@ -7,6 +7,7 @@ import { updatePayerController } from "../controllers/user-controllers/update-pa
 import { UpdateUserController } from "../controllers/user-controllers/update-user-controller";
 import { auth } from "../helpers/pass-helper";
 import { DeleteInvoicesController } from "../controllers/user-controllers/delete-invoice-controller";
+import { DeletePayerController } from "../controllers/user-controllers/delete-payer-controller";
 
 //-------------------------------------------------- END IMPORTS -------------------------------------------------------------//
 
@@ -30,7 +31,7 @@ Router.post('/user/newpayer',newPayerController.newPayer.bind(newPayerController
 
 //UPDATE PAYER
 const editPayerController = new updatePayerController();
-Router.put('/user/editpayer' ,editPayerController.updatePayer.bind(editPayerController));
+Router.put('/user/updatepayer' ,editPayerController.updatePayer.bind(editPayerController));
 
 //UPDATE USER
 const editUserController = new UpdateUserController();
@@ -39,5 +40,9 @@ Router.put('/user/edituser',editUserController.updateUser.bind(editUserControlle
 //DELETE INVOICE
 const deleteInvoiceController = new DeleteInvoicesController();
 Router.delete('/user/deleteinvoice', deleteInvoiceController.deleteInvoice.bind(deleteInvoiceController));
+
+//DELETE PAYER
+const deletePayerController = new DeletePayerController();
+Router.delete('/user/deletepayer', deletePayerController.deletePayer.bind(deletePayerController));
 
 export default Router;

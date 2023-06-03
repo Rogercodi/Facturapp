@@ -3,7 +3,7 @@ import { Invoiceprops } from '../Types/Invoiceprops';
 
 
 
-function InvoiceWeb({base, iva, irpf, body,fecha,payerdata,total,totalirpf,totaliva,user}: Invoiceprops) {
+function InvoiceWeb({base, iva, irpf, body,fecha,payerdata,total,totalirpf,totaliva,user, papellidos, pcp, pdomicilio, pemail, pnif,pnombre,ppoblacion}: Invoiceprops) {
 
 
 
@@ -32,17 +32,18 @@ return (
           <p>{user.dni || ""}</p>
           <p>{user.address || ""}</p>
           <p>{user.cp + user.city || ""}</p>
-          <p>{user.correo || ""}</p>
+          <p>{user.emailapp || ""}</p>
         </div>
   {/* PAYER DATA */}
         <div className="pr-20 pt-8">
           <p className="font-extrabold">
-            {payerdata?.nombre + ' ' + payerdata?.apellidos || " "}
+            { pnombre + ' ' + papellidos || ''}
+           
           </p>
-          <p>{payerdata?.nif || " "}</p>
-          <p>{payerdata?.domicilio || " "}</p>
-          <p>{payerdata?.cp + payerdata?.poblacion || " "}</p>
-          <p>{payerdata?.email || " "}</p>
+          <p>{pnif || " "}</p>
+          <p>{pdomicilio || " "}</p>
+          <p>{pcp + ' ' +ppoblacion || " "}</p>
+          <p>{pemail || " "}</p>
         </div>
       </div>
     </div>

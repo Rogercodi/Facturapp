@@ -3,12 +3,21 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
-
+import axios from "axios";
 
 function MyPayers() {
-  const { payers } = useContext(FacturappContext) as FacturappContextType;
+  const { payers, setUpdatePayer } = useContext(FacturappContext) as FacturappContextType;
 
   const navigate = useNavigate();
+
+  const deletePayer = async(id: number | undefined) => {
+    let result = await axios({
+      url: 'http://localhost:3000/user/deletepayer',
+      method: 'delete',
+      data: {id}
+    });
+    console.log(result)
+  }
 
   return (
     <div>
@@ -73,6 +82,12 @@ function MyPayers() {
                     >
                       CP
                     </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
+                    >
+                      Acciones
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -106,7 +121,23 @@ function MyPayers() {
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
                           {item.cp}
                         </td>
-                        
+                        <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
+                          <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
+                            onClick={() => {
+                              setUpdatePayer(item);
+                              navigate('/user/updatepayer')
+                            }}
+                          >
+                            Actualizar
+                          </button>
+                          <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 ml-1 rounded"
+                            onClick={() => deletePayer(item.idpayer)}
+                          >
+                           Eliminar
+                          </button>
+                        </td>
                       </tr>
                     );
                   })}
@@ -117,8 +148,11 @@ function MyPayers() {
         </div>
       </div>
       <div className="flex justify-center mt-16 ">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-14 rounded"
-        onClick={() => navigate('/user/newpayer')}
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-14 rounded"
+          onClick={() => 
+            {setUpdatePayer(null);
+            navigate("/user/newpayer")}}
         >
           Nuevo Pagador
         </button>

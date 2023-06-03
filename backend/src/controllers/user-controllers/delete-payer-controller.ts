@@ -4,19 +4,20 @@ import { IAppInvoice, IInvoice } from "../../app-types/invoice-type";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
 import { Request, Response, NextFunction } from "express";
 
-export class DeleteInvoicesController {
+export class DeletePayerController {
     private userRepository: IUserSqlRepository;
 
     constructor(){
         this.userRepository = new UserSqlRepository();
     };
 
-    public async deleteInvoice (req: Request, res: Response, next: NextFunction) {
+    public async deletePayer (req: Request, res: Response, next: NextFunction) {
         try {
             
-            const { idInvoice } = req.body;
-            let result = await this.userRepository.deleteInvoice(idInvoice)
-
+            const { id } = req.body;
+            console.log(id)
+            let result = await this.userRepository.deletePayer(id)
+            console.log(result)
             if(result === 0){
                 return res.send({message: 'Invoice not found'})
             } else {

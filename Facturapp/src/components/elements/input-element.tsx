@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 
 interface props {
     children?: ReactNode;
-    onChange(data: any): void;
+    onChange: React.Dispatch<React.SetStateAction<string>>;
     value?: string;
     id: string;
     type: string
@@ -24,7 +24,8 @@ function InputForm({onChange, value, id, type}: props) {
     onChange={(e: React.ChangeEvent <HTMLInputElement>) => {
         e.preventDefault(),
         onChange(e.target.value)
-    }}  />
+    }} 
+     />
   )
 }
 

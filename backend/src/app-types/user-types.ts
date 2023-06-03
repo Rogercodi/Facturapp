@@ -7,7 +7,7 @@ export interface sqlUserI {
     passwordu?: string;
     domicilio: string;
     poblacion: string;
-    cp: number;
+    cp: string;
     numcuenta: string;
   }
   
@@ -15,10 +15,10 @@ export interface sqlUserI {
     iduser: number;
     name: string;
     surname: string;
-    correo: string;
+    emailapp: string;
     dni: string;
     address: string;
     city: string;
-    cp: number;
+    cp: string;
     banknumber: string;
   }
