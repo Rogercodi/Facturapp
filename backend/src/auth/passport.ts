@@ -22,20 +22,22 @@ export const loginPassport = function initialize(passport: PassportStatic) {
 
           bcrypt.compare(password, user.passwordu, (err, isMatch) => {
             if (err) {
-              console.log("error");
+             
               throw err;
             }
 
             if (isMatch) {
-              console.log("ismatch");
+              
               return done(null, user);
-            } else {
-              console.log("else");
-              return done(null, false, { message: "Password is not correct" });
+            } 
+            
+            if(!isMatch) {
+              return done(null, false, { redmessage: "Contraseña incorrecta. Por favor, intente de nuevo" });
             }
+
           });
         } else {
-          return done(null, false, { message: "Email is not registered" });
+          return done(null, false, { redmessage: "Email no registrado" });
         }
       }
     );

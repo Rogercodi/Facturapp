@@ -9,7 +9,7 @@ export class LogoutController {
                 if (err) {
                     return next(err)
                 };
-                return res.send('Sesion cerrada, hasta la proxima!')
+                return res.send({greenmessage: 'Sesion cerrada, hasta la proxima!'})
             });
 
         } catch (e) {

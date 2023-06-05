@@ -18,9 +18,9 @@ export class DeleteInvoicesController {
             let result = await this.userRepository.deleteInvoice(idInvoice)
 
             if(result === 0){
-                return res.send({message: 'Invoice not found'})
+                return res.send({redmessage: 'Factura no encontrada'})
             } else {
-            return res.send({message: 'Deleted!', result}) 
+            return res.send({greenmessage: 'Factura borrada correctamente', result}) 
             }
           } catch (error) {
             console.log(error)

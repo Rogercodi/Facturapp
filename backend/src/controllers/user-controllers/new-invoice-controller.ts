@@ -17,8 +17,9 @@ export class invoiceController {
       const newInvoice: IAppInvoice = req.body;
       const sqlInvoice: IInvoice = new InvoiceSQL(newInvoice)
       const result: number = await this.userRepository.newInvoice(sqlInvoice);
-      res.send({ message: "New invoice added successfully", result });
+      res.send({ greenmessage: "Factura guardada correctamente", result });
     } catch (error) {
+      res.send({redmessage: 'No se ha podido guardar la factura. Intente de nuevo'})
       console.log(error);
       next();
     }

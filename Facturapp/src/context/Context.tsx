@@ -12,6 +12,8 @@ export type FacturappContextType = {
   setRedMessage: React.Dispatch<React.SetStateAction<string>>;
   greenMessage: string;
   setGreenMessage: React.Dispatch<React.SetStateAction<string>>;
+  closeErrorWindow(): void;
+  closeErrorWindowTime(): void;
   iduser: number;
   setIduser: React.Dispatch<React.SetStateAction<number>>;
   name: string;
@@ -56,6 +58,14 @@ export function FacturappContextProvider({ children }: props) {
   const [payers, setPayers] = useState([]);
   const [updatePayer, setUpdatePayer] = useState<IAppPayer | null>();
 
+  const closeErrorWindow = () => {
+    setRedMessage('')
+    setGreenMessage('')
+  };
+
+  
+
+
   return (
     <FacturappContext.Provider
       value={{
@@ -86,7 +96,9 @@ export function FacturappContextProvider({ children }: props) {
         payers,
         setPayers,
         updatePayer,
-        setUpdatePayer
+        setUpdatePayer,
+        closeErrorWindow,
+        
       }}
     >
       <Outlet />

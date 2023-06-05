@@ -13,19 +13,18 @@ export class DeletePayerController {
 
     public async deletePayer (req: Request, res: Response, next: NextFunction) {
         try {
-            
             const { id } = req.body;
-            console.log(id)
             let result = await this.userRepository.deletePayer(id)
             console.log(result)
             if(result === 0){
-                return res.send({message: 'Invoice not found'})
+                return res.send({redmessage: 'Pagador no encontrado'})
             } else {
-            return res.send({message: 'Deleted!', result}) 
+            return res.send({greenmessage: 'Pagador eliminado', result}) 
             }
           } catch (error) {
             console.log(error)
-            next();
+            return res.send({redmessage: 'No se puede eliminar este pagador. Elimine primero sus facturas.'})
+            
           }
       }
 };

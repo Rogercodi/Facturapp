@@ -9,23 +9,21 @@ export class SignUpController {
     try {
       let { nombre, apellidos, email, password, confirmPassword } = req.body;
 
-      console.log(req.body);
+      if (nombre.length < 1 || apellidos.length < 1 || email.length < 1 || password.length < 1) {
+        return res.send({ redmessage: "Todos los campos son obligatorios" });
+      };
+
       if (password !== confirmPassword) {
         return res.send({ redmessage: "Las contraseñas no coinciden" });
-       
-      }
+      };
 
-      if (nombre.length < 1 || apellidos.length < 1 || email.length < 1) {
-        return res.send({ redmessage: "Todos los campos son obligatorios" });
-        
-      }
 
       let text = "SELECT * FROM users u WHERE u.email = $1";
       let values = [email];
       let userCheck = await API.poolConnection.query(text, values);
 
       if (userCheck.rowCount > 0) {
-        res.send({ redmessage: "El email ya esta registrado" });
+        return res.send({ redmessage: "El email ya esta registrado" });
       } else {
         let hashed = await bcrypt.hash(password, 10);
         let text =

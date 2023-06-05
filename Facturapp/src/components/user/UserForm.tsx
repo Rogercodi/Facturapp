@@ -5,6 +5,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import InputForm from "../elements/input-element";
+import GreenalertElement from "../elements/GreenalertElement";
+import RedalertElement from "../elements/Redalert-element";
 
 export function UserForm() {
 
@@ -28,6 +30,11 @@ export function UserForm() {
     setCp,
     setDni,
     setEmailapp,
+    setGreenMessage,
+    setRedMessage,
+    redMessage,
+    greenMessage,
+    closeErrorWindow
   } = useContext(FacturappContext) as FacturappContextType;
 
   const updateUser = async() => {
@@ -42,21 +49,32 @@ export function UserForm() {
       city,
       cp
     }
-    console.log('DATA',data)
+   
     let result = await axios({
       url: 'http://localhost:3000/user/edituser',
       method: 'put',
       data: data
     })
-    if(result.data.result === 0) {
-      // console.log(result.data.message)
-    } else {
+    console.log(result)
+    if(result.data.greenmessage) {
+      setGreenMessage(result.data.greenmessage)
       navigate('/user')
+    } else {
+      setRedMessage(result.data.redmessage)
     }
   }
 
   return (
     <div className="">
+      {/* ERROR WINDOW */}
+      {redMessage === "" ? (
+        ""
+      ) : (
+        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
+      )}
+
+      {/* GREEN MESSAGE WINDOWS */}
+      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
      
       <h1 className="text-center text-4xl my-4">Mi Perfil</h1>
       <>

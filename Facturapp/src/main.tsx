@@ -28,10 +28,10 @@ import Test from "./components/invoice/Test.tsx";
 //
 
 const router = createBrowserRouter([
-// {
-//   path: '/',
-//   element: <Landing />
-// },
+{
+  path: '/',
+  element: <Landing />
+},
 {
   path: '/',
   element: <FacturappContextProvider />,

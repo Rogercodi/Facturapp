@@ -22,7 +22,7 @@ CREATE TABLE payers (
     nif VARCHAR(50),
     domicilio VARCHAR(30),
     poblacion VARCHAR(30),
-    cp INT,
+    cp VARCHAR(10),
     idusuario INT,
     PRIMARY KEY(idpayer),
     FOREIGN KEY(idusuario)
@@ -33,14 +33,14 @@ INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp, idu
 
 CREATE TABLE invoices (
     idinvoice serial not null,
-    base INT,
+    base DECIMAL,
     iva INT,
-    totalIva INT,
+    totalIva DECIMAL,
     irpf INT,
-    totalIrpf INT,
+    totalIrpf DECIMAL,
     body VARCHAR(50),
     fecha DATE,
-    total INT,
+    total DECIMAL,
     idpayer INT,
     idusuario INT,
     PRIMARY KEY(idinvoice),

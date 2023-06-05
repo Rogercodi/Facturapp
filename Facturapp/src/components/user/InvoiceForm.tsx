@@ -9,6 +9,8 @@ import { FacturappContext, FacturappContextType } from "../../context/Context";
 import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
 import { useNavigate } from "react-router-dom";
+import RedalertElement from "../elements/Redalert-element";
+import GreenalertElement from "../elements/GreenalertElement";
 
 function InvoiceForm() {
   const [base, setBase] = useState(0);
@@ -42,6 +44,11 @@ function InvoiceForm() {
     banknumber,
     iduser,
     payers,
+    setGreenMessage,
+    setRedMessage,
+    greenMessage,
+    redMessage,
+    closeErrorWindow
   } = useContext(FacturappContext) as FacturappContextType;
 
   const idusuario = iduser;
@@ -101,8 +108,11 @@ function InvoiceForm() {
       data: invoice,
       timeout: 200,
     });
-    if(result.data.result === 1){
+    if(result.data.greenmessage){
+      setGreenMessage(result.data.greenmessage);
       navigate('/user')
+    } else {
+      setRedMessage(result.data.redmessage)
     }
   };
 
@@ -112,6 +122,15 @@ function InvoiceForm() {
   return (
     <>
       <div>
+        {/* ERROR WINDOW */}
+      {redMessage === "" ? (
+        ""
+      ) : (
+        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
+      )}
+
+      {/* GREEN MESSAGE WINDOWS */}
+      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
         <h1 className="text-4xl font-bold py-4 flex justify-center">Factura</h1>
         {/* USER PAYER DATA */}
         <div className="flex justify-evenly my-10">

@@ -6,11 +6,21 @@ import { FacturappContext, FacturappContextType } from "../../context/Context";
 
 
 function UserNav() {
-  const { iduser, setInvoices, payers, setPayers } = useContext(
+  const { iduser, setInvoices, payers, setPayers, setGreenMessage } = useContext(
     FacturappContext
   ) as FacturappContextType;
 
-  
+  const logOut = async () => {
+    let result = await axios({
+      url: 'http://localhost:3000/user/logout',
+      method: 'get'
+    })
+
+    if(result.data.greenmessage){
+      console.log(result.data.greenmessage)
+      setGreenMessage(result.data.greenmessage)
+    }
+  }
 
   const myInvoices = async () => {
     let data = {
@@ -21,9 +31,7 @@ function UserNav() {
       method: "post",
       data: data
     });
-    console.log(result)
-
-    setInvoices(result.data.appInvoices);
+      setInvoices(result.data.appInvoices);
   };
 
   const myPayers = async () => {
@@ -69,13 +77,7 @@ function UserNav() {
         </div>
         <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
           <div className="flex justify-evenly text-sm lg:flex-grow">
-            <Link
-              to={"/user/newinvoice"}
-              className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4"
-            >
-              Crear Factura
-            </Link>
-
+            
             <Link
               to={"/user/myinvoices"}
               onClick={myInvoices}
@@ -89,6 +91,13 @@ function UserNav() {
               className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white"
             >
               Mis Pagadores
+            </Link>
+            <Link
+              to={"/signin"}
+              className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-white mr-4"
+              onClick={logOut}
+            >
+              Cerrar session
             </Link>
           </div>
           <div>

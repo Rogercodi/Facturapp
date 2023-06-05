@@ -18,9 +18,9 @@ export class UpdateUserController {
       let toUpdateUser = new UserSql(user)
       let result = await this.userRepository.updateUser(toUpdateUser);
       if (result === 1) {
-        res.send({ message: "User successfully updated", result });
+        res.send({ greenmessage: "Usuario actualizado correctamente", result });
       } else {
-        res.send({ message: 'Update failed, try again'})
+        res.send({ redmessage: 'Los datos no son correctos, inténtelo de nuevo'})
       }
     } catch (error) {
       console.log(error);

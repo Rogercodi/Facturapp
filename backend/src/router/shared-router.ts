@@ -17,6 +17,6 @@ Router.post('/signup', signUpController.signUp.bind(signUpController));
 
 //LOGOUT
 const logOutController = new LogoutController();
-Router.get('/logout', logOutController.logOut.bind(logOutController));
+Router.get('/user/logout', logOutController.logOut.bind(logOutController));
 
 export default Router;

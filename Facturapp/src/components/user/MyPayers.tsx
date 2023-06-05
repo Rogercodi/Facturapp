@@ -4,23 +4,41 @@ import { useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import axios from "axios";
+import GreenalertElement from "../elements/GreenalertElement";
+import RedalertElement from "../elements/Redalert-element";
 
 function MyPayers() {
-  const { payers, setUpdatePayer } = useContext(FacturappContext) as FacturappContextType;
+  const { payers, setUpdatePayer, redMessage, setRedMessage, setGreenMessage, closeErrorWindow, greenMessage } = useContext(
+    FacturappContext
+  ) as FacturappContextType;
 
   const navigate = useNavigate();
 
-  const deletePayer = async(id: number | undefined) => {
+  const deletePayer = async (id: number | undefined) => {
     let result = await axios({
-      url: 'http://localhost:3000/user/deletepayer',
-      method: 'delete',
-      data: {id}
+      url: "http://localhost:3000/user/deletepayer",
+      method: "delete",
+      data: { id },
     });
-    console.log(result)
-  }
+    if(result.data.redmessage){
+      setRedMessage(result.data.redmessage)
+    } else {
+      setGreenMessage(result.data.greenmessage);
+      navigate('/user')
+    }
+  };
 
   return (
     <div>
+      {/* ERROR WINDOW */}
+      {redMessage === "" ? (
+        ""
+      ) : (
+        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
+      )}
+
+      {/* GREEN MESSAGE WINDOWS */}
+      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
       <div className="flex flex-col mt-10">
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">
@@ -126,7 +144,7 @@ function MyPayers() {
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded"
                             onClick={() => {
                               setUpdatePayer(item);
-                              navigate('/user/updatepayer')
+                              navigate("/user/updatepayer");
                             }}
                           >
                             Actualizar
@@ -135,7 +153,7 @@ function MyPayers() {
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 ml-1 rounded"
                             onClick={() => deletePayer(item.idpayer)}
                           >
-                           Eliminar
+                            Eliminar
                           </button>
                         </td>
                       </tr>
@@ -150,9 +168,10 @@ function MyPayers() {
       <div className="flex justify-center mt-16 ">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-14 rounded"
-          onClick={() => 
-            {setUpdatePayer(null);
-            navigate("/user/newpayer")}}
+          onClick={() => {
+            setUpdatePayer(null);
+            navigate("/user/newpayer");
+          }}
         >
           Nuevo Pagador
         </button>

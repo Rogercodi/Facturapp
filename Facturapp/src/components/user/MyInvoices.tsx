@@ -6,6 +6,9 @@ import ReactToPrint from "react-to-print";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import MyPayers from "./MyPayers";
+import GreenalertElement from "../elements/GreenalertElement";
+import RedalertElement from "../elements/Redalert-element";
 
 function MyInvoices() {
   const navigate = useNavigate();
@@ -20,42 +23,64 @@ function MyInvoices() {
     emailapp,
     surname,
     iduser,
-    banknumber
+    banknumber,
+    setPayers,
+    closeErrorWindow,
+    redMessage,
+    greenMessage,
+    setRedMessage,
+    setGreenMessage
   } = useContext(FacturappContext) as FacturappContextType;
 
   const [invoice, setInvoice] = useState<IAppInvoice>();
-  const [invoiceState, setInvoiceState] = useState('Generada' || 'Enviada')
+  const [invoiceState, setInvoiceState] = useState("Generada" || "Enviada");
 
-
- 
-
-  // useEffect(() => {
-  //   setIdInvoice(invoice?.idinvoice);
-  // }, [invoice]);
+  
 
   const [verWeb, setVerWeb] = useState(false);
 
   const componentRef: any = useRef();
 
   const deleteInvoice = async (idInvoice: number | undefined) => {
-    
     let result = await axios({
       url: "http://localhost:3000/user/deleteinvoice",
       data: { idInvoice },
       method: "delete",
     });
-    console.log(result);
-    if (result.data.result === 1) {
+    console.log(result)
+    if (result.data.greenmessage) {
+      setGreenMessage(result.data.greenmessage)
       navigate("/user");
+    } else {
+      setRedMessage(result.data.redmessage)
     }
   };
 
-  
+  const loadPayers = async () => {
+    let data = { iduser };
+    let result = await axios({
+      url: "http://localhost:3000/user/mypayers",
+      method: "post",
+      data: data,
+    });
+    setPayers(result.data.appPayers)
+  }
 
   return (
     <>
-      <div className="flex flex-col mt-10 mb-10
-      ">
+    {/* ERROR WINDOW */}
+    {redMessage === "" ? (
+        ""
+      ) : (
+        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
+      )}
+
+      {/* GREEN MESSAGE WINDOWS */}
+      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+      <div
+        className="flex flex-col mt-10 mb-10
+      "
+      >
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">
             <div className="border overflow-hidden dark:border-gray-700">
@@ -164,11 +189,23 @@ function MyInvoices() {
                           >
                             Eliminar
                           </button>
-                          <button 
-                          onClick={
-                            invoiceState === 'Generada' ? ()=> setInvoiceState('Enviada') : ()=>setInvoiceState('Generada') 
-                          }
-                          className= {invoiceState === 'Generada' ? "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" : "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"}>
+                          <button
+                            onClick={() => {
+                              if(invoiceState === 'Generada'){
+                                setInvoiceState('Enviada')
+                              } else if (invoiceState === 'Enviada'){
+                                setInvoiceState('Cobrada')
+                              } else {
+                                setInvoiceState('Generada')
+                              }
+                            }
+                            }
+                            className={
+                              invoiceState === "Generada"
+                                ? "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                : "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                            }
+                          >
                             {invoiceState}
                           </button>
                         </td>
@@ -178,6 +215,17 @@ function MyInvoices() {
                 </tbody>
               </table>
             </div>
+          </div>
+          <div className="flex justify-center mt-10">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-14 rounded "
+              onClick={() => {
+                navigate("/user/newinvoice");
+                loadPayers();
+              }}
+            >
+              Nueva Factura
+            </button>
           </div>
         </div>
       </div>
@@ -194,15 +242,24 @@ function MyInvoices() {
               body={invoice?.body || " "}
               fecha={invoice?.fecha || " "}
               total={invoice?.total || 0}
-              user={{ name, surname, dni, address, cp, city, emailapp, iduser, banknumber }}
-              papellidos={invoice?.apellidos || ' '}
-              pnombre={invoice?.nombre || ' '}
-              pdomicilio={invoice?.domicilio || ' '}
-              pcp={invoice?.cp || ''}
-              pemail={invoice?.email || ''}
-              pnif={invoice?.nif || ''}
-              ppoblacion={invoice?.poblacion || ''}
-
+              user={{
+                name,
+                surname,
+                dni,
+                address,
+                cp,
+                city,
+                emailapp,
+                iduser,
+                banknumber,
+              }}
+              papellidos={invoice?.apellidos || " "}
+              pnombre={invoice?.nombre || " "}
+              pdomicilio={invoice?.domicilio || " "}
+              pcp={invoice?.cp || ""}
+              pemail={invoice?.email || ""}
+              pnif={invoice?.nif || ""}
+              ppoblacion={invoice?.poblacion || ""}
             />
           ) : (
             ""

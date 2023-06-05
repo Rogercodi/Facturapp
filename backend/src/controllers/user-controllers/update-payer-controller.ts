@@ -14,10 +14,10 @@ export class updatePayerController {
   public async updatePayer(req: Request, res: Response, next: NextFunction) {
     try {
       let toUpdatePayer: IAppPayer = req.body;
-      console.log(toUpdatePayer, 'updatepayer')
+      
       let sqlPayer = new PayerSQL(toUpdatePayer)
       const result = await this.userRepository.updatePayer(sqlPayer);
-      res.send({ message: "Payer updated successfully", result });
+      return res.send({ greenmessage: "Pagador actualizado correctamente", result });
     } catch (error) {
       console.log(error);
       next();
