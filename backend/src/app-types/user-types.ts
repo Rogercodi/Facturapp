@@ -9,6 +9,8 @@ export interface sqlUserI {
     poblacion: string;
     cp: string;
     numcuenta: string;
+    pregunta?: string;
+    respuesta?: string;
   }
   
   export interface UserAppI {
@@ -21,4 +23,6 @@ export interface sqlUserI {
     city: string;
     cp: string;
     banknumber: string;
+    question?: string;
+    answer?: string;
   }

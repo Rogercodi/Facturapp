@@ -5,7 +5,7 @@ export const auth = {
         if(req.isAuthenticated()){
             next()
         } else {
-            res.send({message: 'Ruta no autorizada. Por favor, inicie sesión'})
+            res.send({redmessage: 'Ruta no autorizada. Por favor, inicie sesión'})
         }
     }
 };

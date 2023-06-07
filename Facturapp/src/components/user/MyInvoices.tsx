@@ -5,7 +5,7 @@ import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import MyPayers from "./MyPayers";
 import GreenalertElement from "../elements/GreenalertElement";
 import RedalertElement from "../elements/Redalert-element";
@@ -29,13 +29,11 @@ function MyInvoices() {
     redMessage,
     greenMessage,
     setRedMessage,
-    setGreenMessage
+    setGreenMessage,
   } = useContext(FacturappContext) as FacturappContextType;
 
   const [invoice, setInvoice] = useState<IAppInvoice>();
   const [invoiceState, setInvoiceState] = useState("Generada" || "Enviada");
-
-  
 
   const [verWeb, setVerWeb] = useState(false);
 
@@ -47,12 +45,12 @@ function MyInvoices() {
       data: { idInvoice },
       method: "delete",
     });
-    console.log(result)
+    console.log(result);
     if (result.data.greenmessage) {
-      setGreenMessage(result.data.greenmessage)
+      setGreenMessage(result.data.greenmessage);
       navigate("/user");
     } else {
-      setRedMessage(result.data.redmessage)
+      setRedMessage(result.data.redmessage);
     }
   };
 
@@ -63,13 +61,19 @@ function MyInvoices() {
       method: "post",
       data: data,
     });
-    setPayers(result.data.appPayers)
+    setPayers(result.data.appPayers);
+  };
+
+  if(name === ''){
+    setRedMessage('Ruta protegida. Inicie sesión')
+    return <Navigate  to={'/signin'} />
   }
 
   return (
     <>
-    {/* ERROR WINDOW */}
-    {redMessage === "" ? (
+      <div className="messages">
+      {/* ERROR WINDOW */}
+      {redMessage === "" ? (
         ""
       ) : (
         <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
@@ -77,6 +81,8 @@ function MyInvoices() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+     
+    </div>
       <div
         className="flex flex-col mt-10 mb-10
       "
@@ -191,18 +197,18 @@ function MyInvoices() {
                           </button>
                           <button
                             onClick={() => {
-                              if(invoiceState === 'Generada'){
-                                setInvoiceState('Enviada')
-                              } else if (invoiceState === 'Enviada'){
-                                setInvoiceState('Cobrada')
+                              if (invoiceState === "Generada") {
+                                setInvoiceState("Enviada");
+                              } else if (invoiceState === "Enviada") {
+                                setInvoiceState("Cobrada");
                               } else {
-                                setInvoiceState('Generada')
+                                setInvoiceState("Generada");
                               }
-                            }
-                            }
+                            }}
                             className={
                               invoiceState === "Generada"
                                 ? "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                : invoiceState === 'Enviada' ? "bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
                                 : "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                             }
                           >

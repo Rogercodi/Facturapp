@@ -2,7 +2,7 @@ import  { useContext } from "react";
 
 
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import InputForm from "../elements/input-element";
 import GreenalertElement from "../elements/GreenalertElement";
@@ -64,8 +64,14 @@ export function UserForm() {
     }
   }
 
+  if(name === ''){
+    setRedMessage('Ruta protegida. Inicie sesión')
+    return <Navigate  to={'/signin'} />
+  }
+
   return (
     <div className="">
+      <div className="messages">
       {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
@@ -75,6 +81,8 @@ export function UserForm() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+     
+    </div>
      
       <h1 className="text-center text-4xl my-4">Mi Perfil</h1>
       <>

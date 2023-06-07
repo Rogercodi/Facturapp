@@ -7,12 +7,15 @@ import RedalertElement from "./elements/Redalert-element";
 import FormInputElement from "./elements/FormInputElement";
 import GreenalertElement from "./elements/GreenalertElement";
 
+
 function Signup() {
   const [nombre, setNombre] = useState("");
   const [apellidos, setApellidos] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [pregunta, setPregunta] = useState('');
+  const [respuesta, setRespuesta] = useState('');
 
   const navigate = useNavigate();
 
@@ -22,7 +25,6 @@ function Signup() {
     setGreenMessage,
     setRedMessage,
     closeErrorWindow,
-    closeErrorWindowTime,
   } = useContext(FacturappContext) as FacturappContextType;
 
   const registerUser = async () => {
@@ -32,6 +34,8 @@ function Signup() {
       email,
       password,
       confirmPassword,
+      pregunta,
+      respuesta
     };
 
     let result = await axios({
@@ -39,9 +43,9 @@ function Signup() {
       method: "post",
       data: user,
     });
+    console.log(result)
     if (result.data.redmessage) {
       setRedMessage(result.data.redmessage);
-      closeErrorWindowTime;
     } else {
       setGreenMessage(result.data.greenmessage);
       setTimeout(() => {
@@ -52,7 +56,8 @@ function Signup() {
 
   return (
     <div>
-      {/* ERROR WINDOW */}
+      <div className="messages">
+        {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
       ) : (
@@ -61,6 +66,7 @@ function Signup() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+      </div>
 
       <h1 className="flex justify-center text-5xl mt-10 font-bold">
         Bienvenido/a a Facturapp!
@@ -136,6 +142,30 @@ function Signup() {
                 onChange={setConfirmPassword}
                 htmlFor={"confirmarcontrasena"}
                 children="Confirmar Contraseña"
+              />
+            </div>
+
+            <div>
+            <FormInputElement
+                id={"pregunta"}
+                name={"pregunta"}
+                type={"text"}
+                autoComplete={"current-text"}
+                onChange={setPregunta}
+                htmlFor={"pregunta"}
+                children="Pregunta de seguridad"
+              />
+            </div>
+
+            <div>
+            <FormInputElement
+                id={"respuesta"}
+                name={"respuesta"}
+                type={"text"}
+                autoComplete={"current-text"}
+                onChange={setRespuesta}
+                htmlFor={"respuesta"}
+                children="Respuesta de seguridad"
               />
             </div>
 

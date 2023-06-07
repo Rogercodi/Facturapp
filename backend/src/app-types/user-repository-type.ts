@@ -2,6 +2,7 @@ import { IAppPayer, IPayer } from "./payer-type";
 import { sqlUserI } from "./user-types";
 import { IAppInvoice, IInvoice } from "./invoice-type";
 import { AppPayer } from "../Repositories/AppPayer";
+import { TNewPasswordData, TRecoverData } from "./recovery-types";
 
 
 export interface IUserSqlRepository {
@@ -13,4 +14,6 @@ export interface IUserSqlRepository {
     updatePayer(payer: IPayer): Promise<number>;
     deleteInvoice(id: number): Promise<number>;
     deletePayer(id: number): Promise<number>;
+    recoverUser(email: string): Promise<TRecoverData[] | 0>;
+    setNewPassword(data: TNewPasswordData): Promise<number>;
   }

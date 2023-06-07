@@ -1,7 +1,7 @@
 import axios from "axios";
 import  { useContext, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import InputForm from "../elements/input-element";
@@ -10,7 +10,7 @@ import RedalertElement from "../elements/Redalert-element";
 
 
 export function PayerForm() {
-  const { iduser, updatePayer, greenMessage, redMessage, setGreenMessage, setRedMessage, closeErrorWindow } = useContext(FacturappContext) as FacturappContextType;
+  const { iduser, updatePayer, greenMessage, redMessage, setGreenMessage, setRedMessage, closeErrorWindow, name } = useContext(FacturappContext) as FacturappContextType;
   const [idpayer, setIdpayer] = useState<number | undefined>(updatePayer?.idpayer || 0)
   const [nombre, setNombre] = useState(updatePayer?.nombre || "");
   const [apellidos, setApellidos] = useState(updatePayer?.apellidos || "");
@@ -41,7 +41,8 @@ export function PayerForm() {
       method: "post",
       data: data,
     });
-    if(result.data.greenMessage){
+    console.log(result)
+    if(result.data.greenmessage){
       setGreenMessage(result.data.greenmessage)
       navigate('/user');
     } else {
@@ -68,8 +69,6 @@ export function PayerForm() {
       method: "put",
       data: data,
     });
-
-  
     if(result.data.greenmessage){
       setGreenMessage(result.data.greenmessage);
       navigate('/user');
@@ -78,8 +77,14 @@ export function PayerForm() {
     }
   };
 
+  if(name === ''){
+    setRedMessage('Ruta protegida. Inicie sesión')
+    return <Navigate  to={'/signin'} />
+  }
+
   return (
     <div className="bg-slate-200">
+      <div className="messages">
       {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
@@ -89,6 +94,8 @@ export function PayerForm() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+     
+    </div>
       <h1 className="text-center text-4xl my-4">Nuevo Pagador</h1>
       <div className="flex flex-col text-center items-center bg-slate-100">
         <div>

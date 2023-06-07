@@ -16,8 +16,9 @@ export class payerController {
             const newPayer: IAppPayer = req.body
             const sqlPayer: IPayer = new PayerSQL(newPayer)
             const result = await this.userRepository.newPayer(sqlPayer);
-            res.send({message: 'New payer added successfully', result})
+            res.send({greenmessage: 'Nuevo pagador añadido correctamente', result})
         } catch (error) {
+            res.send({redmessage: 'Algo ha fallado, por favor intente de nuevo'})
             console.log(error);
             next();
         }

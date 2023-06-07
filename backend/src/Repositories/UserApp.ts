@@ -11,6 +11,8 @@ export class UserApp implements UserAppI {
   readonly city: string;
   readonly cp: string;
   readonly banknumber: string;
+  readonly question: string | undefined;
+  readonly answer: string | undefined;
 
   constructor(user: sqlUserI) {
     this.iduser = user.idusuario;
@@ -22,6 +24,8 @@ export class UserApp implements UserAppI {
     this.city = user.poblacion;
     this.cp = user.cp;
     this.banknumber = user.numcuenta;
+    this.question = user.pregunta;
+    this.answer = user.respuesta
   }
 
   public async getUser(): Promise<UserAppI> {

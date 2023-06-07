@@ -10,6 +10,8 @@ export class UserSql implements sqlUserI {
     readonly poblacion: string;
     readonly cp: string;
     readonly numcuenta: string;
+    readonly pregunta: string | undefined;
+    readonly respuesta: string | undefined;
 
 
     constructor(user: UserAppI){
@@ -22,6 +24,7 @@ export class UserSql implements sqlUserI {
         this.poblacion = user.city;
         this.cp = user.cp;
         this.numcuenta = user.banknumber;
+        this.pregunta = user.question;
+        this.respuesta = user.answer;
     }
-
 };

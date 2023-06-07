@@ -54,7 +54,7 @@ export const loginPassport = function initialize(passport: PassportStatic) {
   );
 
   passport.serializeUser((user: any, done) => {
-    console.log("serialize"), done(null, user.idusuario);
+    done(null, user.idusuario);
   });
 
   passport.deserializeUser( (id, done) => {

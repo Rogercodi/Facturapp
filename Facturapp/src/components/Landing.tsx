@@ -6,6 +6,7 @@ function Landing() {
 
   return (
     <div className="">
+      
       <h1 className="flex justify-center text-5xl mt-10 font-bold">
         Bienvenido/a a Facturapp!
       </h1>

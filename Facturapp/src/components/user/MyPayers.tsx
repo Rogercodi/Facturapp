@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import axios from "axios";
@@ -8,7 +8,7 @@ import GreenalertElement from "../elements/GreenalertElement";
 import RedalertElement from "../elements/Redalert-element";
 
 function MyPayers() {
-  const { payers, setUpdatePayer, redMessage, setRedMessage, setGreenMessage, closeErrorWindow, greenMessage } = useContext(
+  const { payers, setUpdatePayer, redMessage, setRedMessage, setGreenMessage, closeErrorWindow, greenMessage, name } = useContext(
     FacturappContext
   ) as FacturappContextType;
 
@@ -28,8 +28,14 @@ function MyPayers() {
     }
   };
 
+  if(name === ''){
+    setRedMessage('Ruta protegida. Inicie sesión')
+    return <Navigate  to={'/signin'} />
+  }
+
   return (
     <div>
+      <div className="messages">
       {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
@@ -39,6 +45,8 @@ function MyPayers() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+     
+    </div>
       <div className="flex flex-col mt-10">
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">

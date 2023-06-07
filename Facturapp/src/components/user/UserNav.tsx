@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useContext } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 
 
 
 function UserNav() {
-  const { iduser, setInvoices, payers, setPayers, setGreenMessage } = useContext(
+  const { iduser, setInvoices, setPayers, setGreenMessage, setAddress, setBanknumber, setCity, setDni, setCp, setEmailapp, setIduser, setName, setSurname,  } = useContext(
     FacturappContext
   ) as FacturappContextType;
 
@@ -17,8 +17,16 @@ function UserNav() {
     })
 
     if(result.data.greenmessage){
-      console.log(result.data.greenmessage)
-      setGreenMessage(result.data.greenmessage)
+      setGreenMessage(result.data.greenmessage);
+      setAddress('');
+      setBanknumber('');
+      setCity('');
+      setCp('');
+      setDni('');
+      setEmailapp('');
+      setIduser(0);
+      setName('');
+      setSurname('')
     }
   }
 

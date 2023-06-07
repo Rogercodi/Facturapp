@@ -13,7 +13,6 @@ export class LoginController {
       async (err: any, user: sqlUserI) => {
         if (err) throw err;
         if (!user) {
-          console.log(user)
           return res.send({ redmessage: "El usuario no existe o la contraseña no es correcta" });
         } else {
           req.logIn(user, (err) => {

@@ -23,26 +23,26 @@ Router.post('/user/mypayers', getMyPayersController.getPayers.bind(getMyPayersCo
 
 //NEW INVOICE
 const newInvoiceController = new invoiceController();
-Router.post("/user/newinvoice", newInvoiceController.newInvoice.bind(newInvoiceController));
+Router.post("/user/newinvoice", auth.pass, newInvoiceController.newInvoice.bind(newInvoiceController));
 
 //NEW PAYER
 const newPayerController = new payerController();
-Router.post('/user/newpayer',newPayerController.newPayer.bind(newPayerController))
+Router.post('/user/newpayer', auth.pass, newPayerController.newPayer.bind(newPayerController))
 
 //UPDATE PAYER
 const editPayerController = new updatePayerController();
-Router.put('/user/updatepayer' ,editPayerController.updatePayer.bind(editPayerController));
+Router.put('/user/updatepayer', auth.pass, editPayerController.updatePayer.bind(editPayerController));
 
 //UPDATE USER
 const editUserController = new UpdateUserController();
-Router.put('/user/edituser',editUserController.updateUser.bind(editUserController));
+Router.put('/user/edituser', auth.pass, editUserController.updateUser.bind(editUserController));
 
 //DELETE INVOICE
 const deleteInvoiceController = new DeleteInvoicesController();
-Router.delete('/user/deleteinvoice', deleteInvoiceController.deleteInvoice.bind(deleteInvoiceController));
+Router.delete('/user/deleteinvoice', auth.pass, deleteInvoiceController.deleteInvoice.bind(deleteInvoiceController));
 
 //DELETE PAYER
 const deletePayerController = new DeletePayerController();
-Router.delete('/user/deletepayer', deletePayerController.deletePayer.bind(deletePayerController));
+Router.delete('/user/deletepayer', auth.pass, deletePayerController.deletePayer.bind(deletePayerController));
 
 export default Router;

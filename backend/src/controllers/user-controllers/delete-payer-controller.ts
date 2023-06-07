@@ -15,7 +15,6 @@ export class DeletePayerController {
         try {
             const { id } = req.body;
             let result = await this.userRepository.deletePayer(id)
-            console.log(result)
             if(result === 0){
                 return res.send({redmessage: 'Pagador no encontrado'})
             } else {

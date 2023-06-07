@@ -6,21 +6,23 @@ import { IUserSqlRepository } from "../app-types/user-repository-type";
 import { AppInvoice } from "./AppInvoice";
 import { AppPayer } from "./AppPayer";
 import { IAppPayer } from "../app-types/payer-type";
+import { TNewPasswordData, TRecoverData } from "../app-types/recovery-types";
 
 export class UserSqlRepository implements IUserSqlRepository {
   constructor() {}
 
   // MY INVOICES
   async getMyInvoices(id: number): Promise<AppInvoice[]> {
-    let text = "SELECT * FROM invoices i LEFT JOIN payers p ON i.idpayer=p.idpayer WHERE i.idusuario = $1 " ;
+    let text =
+      "SELECT * FROM invoices i LEFT JOIN payers p ON i.idpayer=p.idpayer WHERE i.idusuario = $1 ";
     let values = [id];
     let myInvoices: IInvoice[] = (await API.poolConnection.query(text, values))
       .rows;
-    let myAppInvoices:IAppInvoice[] = []
+    let myAppInvoices: IAppInvoice[] = [];
     myInvoices.forEach((invoice: IInvoice) => {
-      myAppInvoices.push(new AppInvoice(invoice));    
-    })
-    console.log(myAppInvoices)
+      myAppInvoices.push(new AppInvoice(invoice));
+    });
+    console.log(myAppInvoices);
     return myAppInvoices;
   }
 
@@ -32,8 +34,8 @@ export class UserSqlRepository implements IUserSqlRepository {
       .rows;
     let myAppPayers: IAppPayer[] = [];
     myPayers.forEach((payer: IPayer) => {
-      myAppPayers.push(new AppPayer(payer))
-    })
+      myAppPayers.push(new AppPayer(payer));
+    });
 
     return myAppPayers;
   }
@@ -69,7 +71,6 @@ export class UserSqlRepository implements IUserSqlRepository {
 
     let newInvoice: number = (await API.poolConnection.query(text, values))
       .rowCount;
-    console.log(newInvoice);
 
     return newInvoice;
   }
@@ -138,7 +139,6 @@ export class UserSqlRepository implements IUserSqlRepository {
       idusuario,
     } = payer;
 
-
     let text =
       "UPDATE payers p SET nombre = $2, apellidos = $3, email = $4, nif = $5, domicilio = $6, poblacion = $7, cp = $8, idusuario = $9 WHERE p.idpayer = $1";
     let values = [
@@ -158,18 +158,45 @@ export class UserSqlRepository implements IUserSqlRepository {
   }
 
   //DELETE INVOICE
-  public async deleteInvoice(id: number):Promise<number>{
-    const text = 'DELETE FROM invoices i WHERE i.idinvoice = $1 ';
-    const values= [id]
-    let result = (await API.poolConnection.query(text, values)).rowCount
-    return result
+  public async deleteInvoice(id: number): Promise<number> {
+    const text = "DELETE FROM invoices i WHERE i.idinvoice = $1 ";
+    const values = [id];
+    let result = (await API.poolConnection.query(text, values)).rowCount;
+    return result;
   }
 
   //DELETE PAYER
   public async deletePayer(id: number): Promise<number> {
-    const text = 'DELETE FROM payers p WHERE p.idpayer = $1';
-    const values = [id]
-    let result = await (await API.poolConnection.query(text, values)).rowCount
+    const text = "DELETE FROM payers p WHERE p.idpayer = $1";
+    const values = [id];
+    let result = (await API.poolConnection.query(text, values)).rowCount;
+    return result;
+  }
+
+  //RECOVER USER
+  public async recoverUser(email: string): Promise<TRecoverData[] | 0> {
+    let text =
+      "SELECT email, pregunta, respuesta FROM users u WHERE u.email = $1";
+    let values = [email];
+    let result = await API.poolConnection.query(text, values);
+    if (result.rowCount === 0) {
+      return 0;
+    } else {
+      return result.rows;
+    }
+  };
+
+  //SET NEW PASSWORD
+  public async setNewPassword(data: TNewPasswordData): Promise<number> {
+    let {password, email} = data;
+    let text = 'UPDATE users u SET passwordu = $1 WHERE u.email = $2;'
+    let values = [password, email];
+    let result:number = (await API.poolConnection.query(text, values)).rowCount;
     return result
   }
 }
+
+
+
+export { TRecoverData };
+

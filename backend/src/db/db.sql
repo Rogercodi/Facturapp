@@ -9,10 +9,12 @@ CREATE TABLE users (
     domicilio VARCHAR(30),
     poblacion VARCHAR(30),
     cp VARCHAR(30),
+    pregunta VARCHAR(50),
+    respuesta VARCHAR(150),
     PRIMARY KEY(idusuario) 
 );
 
-INSERT INTO users (nombre, apellidos, email, dni, passwordu, numcuenta, domicilio, poblacion, cp) VALUES ('Roger', 'Test Test2', 'roger@test.com', '78787878B', '1234', 'ES3352526262525262623333','C/Esdevenidor', 'Ivars', 25260);
+
 
 CREATE TABLE payers (
     idpayer serial not null,

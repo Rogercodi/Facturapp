@@ -8,11 +8,13 @@ import {
 import { FacturappContext, FacturappContextType } from "../../context/Context";
 import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import RedalertElement from "../elements/Redalert-element";
 import GreenalertElement from "../elements/GreenalertElement";
 
 function InvoiceForm() {
+
+  
   const [base, setBase] = useState(0);
   const [iva, setIva] = useState(0);
   const [irpf, setIrpf] = useState(0);
@@ -53,6 +55,11 @@ function InvoiceForm() {
 
   const idusuario = iduser;
   const navigate = useNavigate();
+
+  if(name === ''){
+    setRedMessage('Ruta protegida. Inicie sesión')
+    return <Navigate  to={'/signin'} />
+  }
 
   //SELECT PAYER
   useEffect(() => {
@@ -122,7 +129,8 @@ function InvoiceForm() {
   return (
     <>
       <div>
-        {/* ERROR WINDOW */}
+      <div className="messages">
+      {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
       ) : (
@@ -131,6 +139,8 @@ function InvoiceForm() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+     
+    </div>
         <h1 className="text-4xl font-bold py-4 flex justify-center">Factura</h1>
         {/* USER PAYER DATA */}
         <div className="flex justify-evenly my-10">

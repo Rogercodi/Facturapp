@@ -3,13 +3,21 @@ import { useContext } from "react";
 import { FacturappContext, FacturappContextType } from "./context/Context";
 import RedalertElement from "./components/elements/Redalert-element";
 import GreenalertElement from "./components/elements/GreenalertElement";
+import { Navigate } from "react-router-dom";
 
 function App() {
 
-  const { name, greenMessage, redMessage, closeErrorWindow } = useContext(FacturappContext) as FacturappContextType
+  const { name, greenMessage, redMessage, closeErrorWindow, setRedMessage } = useContext(FacturappContext) as FacturappContextType;
   
+  if(name === ''){
+    setRedMessage('Ruta protegida. Inicie sesión')
+    return <Navigate  to={'/signin'} />
+  }
+
+
   return (
-    <div>
+<>
+<div className="messages">
       {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
@@ -19,9 +27,10 @@ function App() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
-      <h1 className="text-center text-4xl">Bienvenido {name}</h1> 
+     
     </div>
-    
+     <h1 className="text-center text-4xl mt-6">Bienvenido {name}</h1> 
+    </>
   );
 }
 

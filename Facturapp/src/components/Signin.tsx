@@ -65,6 +65,7 @@ function Signin() {
 
   return (
     <div>
+      <div className="messages">
       {/* ERROR WINDOW */}
       {redMessage === "" ? (
         ""
@@ -74,6 +75,8 @@ function Signin() {
 
       {/* GREEN MESSAGE WINDOWS */}
       {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
+     
+    </div>
 
       <h1 className="flex justify-center text-5xl mt-10 font-bold">
         Bienvenido/a a Facturapp!
@@ -114,6 +117,13 @@ function Signin() {
                 htmlFor={"password"}
                 children={"Contraseña"}
               />
+              <Link
+              to={"/recovery"}
+              className="font-semibold text-sm leading-6 text-indigo-600 hover:text-indigo-500"
+            >
+              
+              Has olvidado la contraseña?
+            </Link>
             </div>
 
             <div>

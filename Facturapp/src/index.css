@@ -2,7 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@keyframes wheel {
+  0% {
+    transform: translate(-1000px, 0px);
+  }
+  100% {
+    transform: translate('justify-content: center');
+  }
+}
 
 .page {
     width: 21cm ;
@@ -32,6 +39,12 @@
     bottom: -0.9cm;
 
   }
+
+  .messages{
+    animation: wheel 1s;
+  }
+
+
  
 
 
