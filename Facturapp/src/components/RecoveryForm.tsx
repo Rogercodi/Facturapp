@@ -5,17 +5,18 @@ import FormInputElement from "./elements/FormInputElement";
 import GreenalertElement from "./elements/GreenalertElement";
 import RedalertElement from "./elements/Redalert-element";
 import { FacturappContext, FacturappContextType } from "../context/Context";
-import axios from "axios";
 import bcrypt from "bcryptjs";
-import {TNewPasswordData} from '../../../backend/src/app-types/recovery-types'
+
 
 function RecoveryForm() {
+  //CONTEXT
   const {
     redMessage,
     setRedMessage,
     greenMessage,
     setGreenMessage,
     closeErrorWindow,
+    axiosCall
   } = useContext(FacturappContext) as FacturappContextType;
 
   const [email, setEmail] = useState("");
@@ -30,22 +31,22 @@ function RecoveryForm() {
   const navigate = useNavigate();
   
   //CHECK IF USER
-  const handleRecovery = async () => {
+  const handleRecovery = () => {
     let data = { email };
-
-    let result = await axios({
-      url: "http://localhost:3000/recover",
-      method: "post",
-      data: data,
-    });
-    if (result.data.redmessage) {
-      setRedMessage(result.data.redmessage);
-    } else {
-      setGreenMessage(result.data.greenmessage);
-      setUserEmail(email);
-      setPregunta(result.data.result[0].pregunta);
-      setRespuesta(result.data.result[0].respuesta);
-    }
+    axiosCall('/recover', 'post', data)
+      .then((result) => {
+        if (result.data.redmessage) {
+          setRedMessage(result.data.redmessage);
+        } else {
+          setGreenMessage(result.data.greenmessage);
+          setUserEmail(email);
+          setPregunta(result.data.result[0].pregunta);
+          setRespuesta(result.data.result[0].respuesta);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   };
 
   //CHECK SECURITY ANSWER
@@ -60,23 +61,24 @@ function RecoveryForm() {
   };
 
   //SET NEW PASSWORD
-  const setNewPassword = async() =>{
-    let data: TNewPasswordData = {
+  const setNewPassword = () =>{
+    let data = {
       email,
       password
     };
-    let result = await axios({
-      url: 'http://localhost:3000/setnewpassword',
-      method: 'post',
-      data: data
+    axiosCall('/setnewpassword', 'post', data)
+      .then((result) => {
+        if(result.data.greenmessage){
+          setGreenMessage(result.data.greenmessage);
+          navigate('/signin');
+        } else {
+          setRedMessage(result.data.redmessage)
+        }
+      })
+    .catch((err) => {
+      console.log(err)
     })
-    if(result.data.greenmessage){
-      setGreenMessage(result.data.greenmessage);
-      navigate('/signin');
-    } else {
-      setRedMessage(result.data.redmessage)
     }
-  }
 
   return (
     <div>

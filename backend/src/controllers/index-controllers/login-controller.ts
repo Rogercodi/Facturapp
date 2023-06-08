@@ -7,8 +7,8 @@ export class LoginController {
   constructor() {}
 
   async logIn(req: Request, res: Response, next: NextFunction) {
-    let message = '';
-    let result = await passport.authenticate(
+    
+    await passport.authenticate(
       "local",
       async (err: any, user: sqlUserI) => {
         if (err) throw err;

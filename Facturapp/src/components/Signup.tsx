@@ -18,16 +18,19 @@ function Signup() {
   const [respuesta, setRespuesta] = useState('');
 
   const navigate = useNavigate();
-
+  
+  //CONTEXT
   const {
     greenMessage,
     redMessage,
     setGreenMessage,
     setRedMessage,
     closeErrorWindow,
+    axiosCall
   } = useContext(FacturappContext) as FacturappContextType;
 
-  const registerUser = async () => {
+  //REGISTER
+  const registerUser = () => {
     let user = {
       nombre,
       apellidos,
@@ -38,20 +41,18 @@ function Signup() {
       respuesta
     };
 
-    let result = await axios({
-      url: "http://localhost:3000/signup",
-      method: "post",
-      data: user,
-    });
-    console.log(result)
-    if (result.data.redmessage) {
-      setRedMessage(result.data.redmessage);
-    } else {
-      setGreenMessage(result.data.greenmessage);
-      setTimeout(() => {
-        navigate('/') 
-      }, 3000)
-    }
+    axiosCall('/signup', 'post', user)
+    .then((result) => {
+      if (result.data.redmessage) {
+        setRedMessage(result.data.redmessage);
+      } else {
+        setGreenMessage(result.data.greenmessage);
+        setTimeout(() => {
+          navigate('/') 
+        }, 3000)
+      }
+    })
+    .catch((err) => { console.log(err)})
   };
 
   return (

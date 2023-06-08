@@ -3,14 +3,13 @@ import { API } from "../API";
 import bcrypt from "bcrypt";
 import { PassportStatic } from "passport";
 
-
 export const loginPassport = function initialize(passport: PassportStatic) {
   const authenticateUser = (
     email: string,
     password: string,
     done: Function
   ) => {
-       API.poolConnection.query(
+    API.poolConnection.query(
       "SELECT * FROM users WHERE email = $1",
       [email],
       (err, results) => {
@@ -22,19 +21,19 @@ export const loginPassport = function initialize(passport: PassportStatic) {
 
           bcrypt.compare(password, user.passwordu, (err, isMatch) => {
             if (err) {
-             
               throw err;
             }
 
             if (isMatch) {
-              
               return done(null, user);
-            } 
-            
-            if(!isMatch) {
-              return done(null, false, { redmessage: "Contraseña incorrecta. Por favor, intente de nuevo" });
             }
 
+            if (!isMatch) {
+              return done(null, false, {
+                redmessage:
+                  "Contraseña incorrecta. Por favor, intente de nuevo",
+              });
+            }
           });
         } else {
           return done(null, false, { redmessage: "Email no registrado" });
@@ -53,18 +52,20 @@ export const loginPassport = function initialize(passport: PassportStatic) {
     )
   );
 
-  passport.serializeUser((user: any, done) => {
-    done(null, user.idusuario);
+  passport.serializeUser((user: any & { id: string }, done) => {
+    done(null, user);
   });
 
-  passport.deserializeUser( (id, done) => {
+  passport.deserializeUser((user: any, done) => {
+   
     API.poolConnection.query(
-      "SELECT * FROM users WHERE id = $1",
-      [id],
+      "SELECT * FROM users u WHERE u.idusuario = $1",
+      [user.idusuario],
       (err, results) => {
         if (err) {
           throw err;
         }
+        
         return done(null, results.rows[0]);
       }
     );

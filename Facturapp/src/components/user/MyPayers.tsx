@@ -1,52 +1,67 @@
 import { useContext } from "react";
-
 import { Navigate, useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
-import { FacturappContext, FacturappContextType } from "../../context/Context";
+import { FacturappContext } from "../../context/Context";
+import { FacturappContextType } from "../Types/Context-Type";
 import axios from "axios";
 import GreenalertElement from "../elements/GreenalertElement";
 import RedalertElement from "../elements/Redalert-element";
 
 function MyPayers() {
-  const { payers, setUpdatePayer, redMessage, setRedMessage, setGreenMessage, closeErrorWindow, greenMessage, name } = useContext(
-    FacturappContext
-  ) as FacturappContextType;
+  //CONTEXT
+  const {
+    payers,
+    setUpdatePayer,
+    redMessage,
+    setRedMessage,
+    setGreenMessage,
+    closeErrorWindow,
+    greenMessage,
+    name,
+    protectRoute,
+    axiosCall
+  } = useContext(FacturappContext) as FacturappContextType;
 
   const navigate = useNavigate();
 
-  const deletePayer = async (id: number | undefined) => {
-    let result = await axios({
-      url: "http://localhost:3000/user/deletepayer",
-      method: "delete",
-      data: { id },
-    });
-    if(result.data.redmessage){
-      setRedMessage(result.data.redmessage)
-    } else {
-      setGreenMessage(result.data.greenmessage);
-      navigate('/user')
-    }
+  //DELETE PAYER
+  const deletePayer = (id: number | undefined) => {
+    axiosCall('user/deletepayer', "delete", { id })
+      .then((result) => {
+        if (result.data.redmessage) {
+          setRedMessage(result.data.redmessage);
+        } else {
+          setGreenMessage(result.data.greenmessage);
+          navigate("/user");
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   };
 
-  if(name === ''){
-    setRedMessage('Ruta protegida. Inicie sesión')
-    return <Navigate  to={'/signin'} />
-  }
+  protectRoute();
 
   return (
     <div>
       <div className="messages">
-      {/* ERROR WINDOW */}
-      {redMessage === "" ? (
-        ""
-      ) : (
-        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
-      )}
+        {/* ERROR WINDOW */}
+        {redMessage === "" ? (
+          ""
+        ) : (
+          <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
+        )}
 
-      {/* GREEN MESSAGE WINDOWS */}
-      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
-     
-    </div>
+        {/* GREEN MESSAGE WINDOWS */}
+        {greenMessage === "" ? (
+          ""
+        ) : (
+          <GreenalertElement
+            greenmessage={greenMessage}
+            onClick={closeErrorWindow}
+          />
+        )}
+      </div>
       <div className="flex flex-col mt-10">
         <div className="-m-1.5 overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">

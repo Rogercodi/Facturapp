@@ -19,7 +19,7 @@ export class getInvoicesController {
               appInvoices.push(new AppInvoice(invoice))
             })
            
-            return res.send({message: 'Your Invoices', appInvoices}) 
+            return res.send({greenmessage: 'Your Invoices', appInvoices}) 
           } catch (error) {
             console.log(error)
             next();

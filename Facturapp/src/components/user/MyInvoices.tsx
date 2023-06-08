@@ -1,18 +1,19 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { IAppInvoice } from "../../../../backend/src/app-types/invoice-type";
-import { FacturappContext, FacturappContextType } from "../../context/Context";
+import { FacturappContext} from "../../context/Context";
+import { FacturappContextType } from "../Types/Context-Type";
 import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
-import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
-import MyPayers from "./MyPayers";
+import { useNavigate } from "react-router-dom";
 import GreenalertElement from "../elements/GreenalertElement";
 import RedalertElement from "../elements/Redalert-element";
+import emailjs from '@emailjs/browser'
 
 function MyInvoices() {
   const navigate = useNavigate();
 
+  //CONTEXT
   const {
     invoices,
     name,
@@ -30,44 +31,61 @@ function MyInvoices() {
     greenMessage,
     setRedMessage,
     setGreenMessage,
+    axiosCall,
+    protectRoute
+
   } = useContext(FacturappContext) as FacturappContextType;
 
   const [invoice, setInvoice] = useState<IAppInvoice>();
   const [invoiceState, setInvoiceState] = useState("Generada" || "Enviada");
-
   const [verWeb, setVerWeb] = useState(false);
 
   const componentRef: any = useRef();
 
-  const deleteInvoice = async (idInvoice: number | undefined) => {
-    let result = await axios({
-      url: "http://localhost:3000/user/deleteinvoice",
-      data: { idInvoice },
-      method: "delete",
-    });
-    console.log(result);
-    if (result.data.greenmessage) {
-      setGreenMessage(result.data.greenmessage);
-      navigate("/user");
-    } else {
-      setRedMessage(result.data.redmessage);
-    }
+  //DELETE INVOICE
+  const deleteInvoice = (idInvoice: number | undefined) => {
+    axiosCall('/user/deleteinvoice', "delete", { idInvoice })
+      .then((result) =>{
+        if (result.data.greenmessage) {
+          setGreenMessage(result.data.greenmessage);
+          navigate("/user");
+        } else {
+          setRedMessage(result.data.redmessage);
+        }
+      })
   };
 
-  const loadPayers = async () => {
+  //GET PAYERS
+  const loadPayers =  () => {
     let data = { iduser };
-    let result = await axios({
-      url: "http://localhost:3000/user/mypayers",
-      method: "post",
-      data: data,
-    });
-    setPayers(result.data.appPayers);
+    axiosCall('/user/mypayers', 'post', data)
+      .then((result) => {
+        if(result.data.greenmessage){
+          setPayers(result.data.appPayers);
+        } else if (result.data.redmessage) {
+          setRedMessage(result.data.redmessage)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    
   };
 
-  if(name === ''){
-    setRedMessage('Ruta protegida. Inicie sesión')
-    return <Navigate  to={'/signin'} />
+  //SEND EMAIL
+  const sendEmail = (payeremail:string | undefined, payername:string | undefined ) => {
+   
+    // emailjs.sendForm('service_id', 'template_id', e.target, 'public_key')
+    emailjs.send("service_5bifhq5","template_drjghps",{
+      from_name: name,
+      to_name: payername,
+      message: "Message",
+      email: payeremail,
+      },'AeXNaxfMpH1l8WN0p');
+      console.log(name, payername, payeremail)
   }
+
+  protectRoute();
 
   return (
     <>
@@ -175,7 +193,7 @@ function MyInvoices() {
                           {item.totalirpf + "€"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
-                          {item.total + "€"}
+                          {item.email + "€"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                           <button
@@ -195,7 +213,7 @@ function MyInvoices() {
                           >
                             Eliminar
                           </button>
-                          <button
+                          {/* <button
                             onClick={() => {
                               if (invoiceState === "Generada") {
                                 setInvoiceState("Enviada");
@@ -213,6 +231,12 @@ function MyInvoices() {
                             }
                           >
                             {invoiceState}
+                          </button> */}
+                          <button
+                            onClick={() => sendEmail(item.email, item.nombre)}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                          >
+                            Enviar
                           </button>
                         </td>
                       </tr>

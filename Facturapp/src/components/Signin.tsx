@@ -13,6 +13,7 @@ function Signin() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  //CONTEXT
   const {
     setIduser,
     setAddress,
@@ -24,59 +25,59 @@ function Signin() {
     setName,
     setSurname,
     setRedMessage,
-    redMessage,greenMessage,
+    redMessage,
+    greenMessage,
     closeErrorWindow,
+    axiosCall,
   } = useContext(FacturappContext) as FacturappContextType;
 
+  //LOGIN
   const handleLogin = async () => {
     let data = {
       email,
       password,
     };
-
-    let result = await axios({
-      url: "http://localhost:3000/signin",
-      method: "post",
-      data: data,
-    });
-    console.log(result);
-
-    if(result.data.redmessage){
-      setRedMessage(result.data.redmessage)
-    }
-    
-
-    else {
-      let user: UserAppI = result.data.appUser;
-    let { address, banknumber, city, cp, dni, iduser, name, surname } = user;
-    
-        setName(name),
-        setSurname(surname),
-        setDni(dni),
-        setAddress(address),
-        setBanknumber(banknumber),
-        setCp(cp),
-        setIduser(iduser),
-        setCity(city),
-        setEmailapp(email),
-        setTimeout(() => navigate("/user"), 500);
-    }
+    axiosCall("/signin", "post", data).then((result) => {
+        if (result.data.redmessage) {
+          setRedMessage(result.data.redmessage);
+        } else {
+          let user: UserAppI = result.data.appUser;
+          let { address, banknumber, city, cp, dni, iduser, name, surname } =
+            user;
+          setName(name),
+            setSurname(surname),
+            setDni(dni),
+            setAddress(address),
+            setBanknumber(banknumber),
+            setCp(cp),
+            setIduser(iduser),
+            setCity(city),
+            setEmailapp(email),
+            setTimeout(() => navigate("/user"), 500);
+        }
+    })
+    .catch((err) => console.log(err))
   };
 
   return (
     <div>
+      {/* MESSAGES */}
       <div className="messages">
-      {/* ERROR WINDOW */}
-      {redMessage === "" ? (
-        ""
-      ) : (
-        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
-      )}
+        {redMessage === "" ? (
+          ""
+        ) : (
+          <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
+        )}
 
-      {/* GREEN MESSAGE WINDOWS */}
-      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
-     
-    </div>
+        {greenMessage === "" ? (
+          ""
+        ) : (
+          <GreenalertElement
+            greenmessage={greenMessage}
+            onClick={closeErrorWindow}
+          />
+        )}
+      </div>
 
       <h1 className="flex justify-center text-5xl mt-10 font-bold">
         Bienvenido/a a Facturapp!
@@ -92,8 +93,9 @@ function Signin() {
             Acceder a tu cuenta
           </h2>
         </div>
-
+          
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          {/* FORM */}
           <form className="space-y-6" method="post">
             <div>
               <FormInputElement
@@ -108,7 +110,7 @@ function Signin() {
             </div>
 
             <div>
-            <FormInputElement
+              <FormInputElement
                 id={"password"}
                 name={"password"}
                 type={"password"}
@@ -118,12 +120,11 @@ function Signin() {
                 children={"Contraseña"}
               />
               <Link
-              to={"/recovery"}
-              className="font-semibold text-sm leading-6 text-indigo-600 hover:text-indigo-500"
-            >
-              
-              Has olvidado la contraseña?
-            </Link>
+                to={"/recovery"}
+                className="font-semibold text-sm leading-6 text-indigo-600 hover:text-indigo-500"
+              >
+                Has olvidado la contraseña?
+              </Link>
             </div>
 
             <div>

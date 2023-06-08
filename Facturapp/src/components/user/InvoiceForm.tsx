@@ -1,20 +1,15 @@
-import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
 import { IAppInvoice } from "../../../../backend/src/app-types/invoice-type";
-import {
-  IAppPayer,
-  IPayer,
-} from "../../../../backend/src/app-types/payer-type";
-import { FacturappContext, FacturappContextType } from "../../context/Context";
+import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
+import { FacturappContext } from "../../context/Context";
 import InvoiceWeb from "../invoice/InvoiceWeb";
 import ReactToPrint from "react-to-print";
 import { Navigate, useNavigate } from "react-router-dom";
 import RedalertElement from "../elements/Redalert-element";
 import GreenalertElement from "../elements/GreenalertElement";
+import { FacturappContextType } from "../Types/Context-Type";
 
 function InvoiceForm() {
-
-  
   const [base, setBase] = useState(0);
   const [iva, setIva] = useState(0);
   const [irpf, setIrpf] = useState(0);
@@ -24,8 +19,6 @@ function InvoiceForm() {
   const [totalirpf, setTotalIrpf] = useState(0);
   const [total, setTotal] = useState(0);
   const [idpayer, setIdpayer] = useState(0);
-
-  // const [payer, setPayer] = useState<IAppPayer | undefined>();
   const [pnombre, setPnombre] = useState("");
   const [papellidos, setPapellidos] = useState("");
   const [pemail, setPemail] = useState("");
@@ -35,6 +28,7 @@ function InvoiceForm() {
   const [ppoblacion, setPpoblacion] = useState("");
   const [verWeb, setVerWeb] = useState(false);
 
+  //CONTEXT
   const {
     name,
     surname,
@@ -50,23 +44,20 @@ function InvoiceForm() {
     setRedMessage,
     greenMessage,
     redMessage,
-    closeErrorWindow
+    closeErrorWindow,
+    protectRoute,
+    axiosCall,
   } = useContext(FacturappContext) as FacturappContextType;
 
   const idusuario = iduser;
   const navigate = useNavigate();
 
-  if(name === ''){
-    setRedMessage('Ruta protegida. Inicie sesión')
-    return <Navigate  to={'/signin'} />
-  }
 
   //SELECT PAYER
   useEffect(() => {
     if (idpayer > 0) {
       payers.map((payer: IAppPayer) => {
         if (idpayer === payer.idpayer) {
-          // setPayer(payer);
           setPnombre(payer.nombre);
           setPapellidos(payer.apellidos);
           setPemail(payer.email);
@@ -94,8 +85,8 @@ function InvoiceForm() {
     );
   }, [base, totaliva, totalirpf]);
 
-  // DATABASE SAVE
-  const handleSubmit = async () => {
+  //NEW INVOICE
+  const handleSubmit = () => {
     let invoice: IAppInvoice = {
       base,
       iva,
@@ -109,38 +100,49 @@ function InvoiceForm() {
       idusuario,
     };
 
-    let result = await axios({
-      method: "post",
-      url: "http://localhost:3000/user/newinvoice",
-      data: invoice,
-      timeout: 200,
-    });
-    if(result.data.greenmessage){
-      setGreenMessage(result.data.greenmessage);
-      navigate('/user')
-    } else {
-      setRedMessage(result.data.redmessage)
-    }
+    axiosCall("/user/newinvoice", "post", invoice)
+      .then((result) => {
+        if (result.data.greenmessage) {
+          setGreenMessage(result.data.greenmessage);
+          navigate("/user");
+        } else {
+          setRedMessage(result.data.redmessage);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // PDF GENERATOR
   const componentRef: any = useRef();
 
+  protectRoute();
+
   return (
     <>
       <div>
-      <div className="messages">
-      {/* ERROR WINDOW */}
-      {redMessage === "" ? (
-        ""
-      ) : (
-        <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
-      )}
+        <div className="messages">
+          {/* ERROR WINDOW */}
+          {redMessage === "" ? (
+            ""
+          ) : (
+            <RedalertElement
+              redmessage={redMessage}
+              onClick={closeErrorWindow}
+            />
+          )}
 
-      {/* GREEN MESSAGE WINDOWS */}
-      {greenMessage === '' ? '' : <GreenalertElement greenmessage={greenMessage} onClick={closeErrorWindow} />}
-     
-    </div>
+          {/* GREEN MESSAGE WINDOWS */}
+          {greenMessage === "" ? (
+            ""
+          ) : (
+            <GreenalertElement
+              greenmessage={greenMessage}
+              onClick={closeErrorWindow}
+            />
+          )}
+        </div>
         <h1 className="text-4xl font-bold py-4 flex justify-center">Factura</h1>
         {/* USER PAYER DATA */}
         <div className="flex justify-evenly my-10">

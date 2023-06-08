@@ -22,7 +22,6 @@ export class UserSqlRepository implements IUserSqlRepository {
     myInvoices.forEach((invoice: IInvoice) => {
       myAppInvoices.push(new AppInvoice(invoice));
     });
-    console.log(myAppInvoices);
     return myAppInvoices;
   }
 

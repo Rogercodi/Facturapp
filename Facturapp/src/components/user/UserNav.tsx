@@ -1,55 +1,84 @@
-import axios from "axios";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { FacturappContext, FacturappContextType } from "../../context/Context";
-
-
+import { FacturappContext } from "../../context/Context";
+import { FacturappContextType } from "../Types/Context-Type";
 
 function UserNav() {
-  const { iduser, setInvoices, setPayers, setGreenMessage, setAddress, setBanknumber, setCity, setDni, setCp, setEmailapp, setIduser, setName, setSurname,  } = useContext(
-    FacturappContext
-  ) as FacturappContextType;
+  
+  //CONTEXT
+  const {
+    axiosCall,
+    iduser,
+    setInvoices,
+    setPayers,
+    setGreenMessage,
+    setAddress,
+    setBanknumber,
+    setCity,
+    setDni,
+    setCp,
+    setEmailapp,
+    setIduser,
+    setName,
+    setSurname,
+    setRedMessage
+  } = useContext(FacturappContext) as FacturappContextType;
 
-  const logOut = async () => {
-    let result = await axios({
-      url: 'http://localhost:3000/user/logout',
-      method: 'get'
-    })
-
-    if(result.data.greenmessage){
-      setGreenMessage(result.data.greenmessage);
-      setAddress('');
-      setBanknumber('');
-      setCity('');
-      setCp('');
-      setDni('');
-      setEmailapp('');
-      setIduser(0);
-      setName('');
-      setSurname('')
-    }
-  }
-
-  const myInvoices = async () => {
-    let data = {
-      iduser,
-    };
-    let result = await axios({
-      url: "http://localhost:3000/user/myinvoices",
-      method: "post",
-      data: data
-    });
-      setInvoices(result.data.appInvoices);
+  //LOGOUT
+  const logOut = () => {
+    axiosCall("/user/logout", "get", {})
+      .then((result) => {
+        if (result.data.greenmessage) {
+          setGreenMessage(result.data.greenmessage);
+          setAddress("");
+          setBanknumber("");
+          setCity("");
+          setCp("");
+          setDni("");
+          setEmailapp("");
+          setIduser(0);
+          setName("");
+          setSurname("");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const myPayers = async () => {
+  //GET INVOICES
+  const myInvoices =  () => {
+    let data = {
+      iduser
+    };
+    axiosCall('/user/myinvoices', 'post', data)
+      .then((result) => {
+        if(result.data.greenmessage) {
+        setInvoices(result.data.appInvoices);
+        } else if (result.data.redmessage) {
+          setRedMessage(result.data.redmessage)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
+
+  //GET PAYERS
+  const myPayers =  () => {
     let data = { iduser };
-    let result = await axios({
-      url: "http://localhost:3000/user/mypayers",
-      method: "post",
-      data: data,
-    });
-    setPayers(result.data.appPayers)
+    axiosCall('/user/mypayers', 'post', data)
+      .then((result) => {
+        if(result.data.greenmessage){
+          setPayers(result.data.appPayers);
+        } else if (result.data.redmessage) {
+          setRedMessage(result.data.redmessage)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    
   };
 
   return (
@@ -85,7 +114,6 @@ function UserNav() {
         </div>
         <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
           <div className="flex justify-evenly text-sm lg:flex-grow">
-            
             <Link
               to={"/user/myinvoices"}
               onClick={myInvoices}
@@ -118,7 +146,7 @@ function UserNav() {
           </div>
         </div>
       </nav>
-      {/* <Outlet /> */}
+      
     </div>
   );
 }
