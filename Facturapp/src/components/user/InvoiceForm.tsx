@@ -8,8 +8,10 @@ import { Navigate, useNavigate } from "react-router-dom";
 import RedalertElement from "../elements/Redalert-element";
 import GreenalertElement from "../elements/GreenalertElement";
 import { FacturappContextType } from "../Types/Context-Type";
+import ReactPDF from "@react-pdf/renderer";
 
 function InvoiceForm() {
+  const [numero, setNumero] = useState("");
   const [base, setBase] = useState(0);
   const [iva, setIva] = useState(0);
   const [irpf, setIrpf] = useState(0);
@@ -52,7 +54,6 @@ function InvoiceForm() {
   const idusuario = iduser;
   const navigate = useNavigate();
 
-
   //SELECT PAYER
   useEffect(() => {
     if (idpayer > 0) {
@@ -88,6 +89,7 @@ function InvoiceForm() {
   //NEW INVOICE
   const handleSubmit = () => {
     let invoice: IAppInvoice = {
+      numero,
       base,
       iva,
       totaliva,
@@ -196,15 +198,30 @@ function InvoiceForm() {
         </div>
 
         {/* FECHA */}
-        <div className="flex justify-center">
-          <h2 className="text-xl   ml-4">Fecha</h2>
-          <input
-            onChange={(e) => {
-              setFecha(e.target.value);
-            }}
-            type="date"
-            className="rounded-lg mb-4 ml-4 px-2 border-2 border-solid border-slate-400"
-          ></input>
+        <div className="flex justify-evenly">
+         
+          <div>
+            <h2 className="text-xl   ml-4">Fecha</h2>
+            <input
+              onChange={(e) => {
+                let date = e.target.value;
+                date = date.split('-').reverse().join('-')
+                setFecha(date);
+              }}
+              type="date"
+              className="rounded-lg mb-4 ml-4 px-2 border-2 border-solid border-slate-400"
+            ></input>
+          </div>
+          <div>
+            <h2 className="text-xl   ml-4">Número de factura</h2>
+            <input
+              onChange={(e) => {
+                setNumero(e.target.value);
+              }}
+              type="text"
+              className="rounded-lg mb-4 ml-4 px-2 border-2 border-solid border-slate-400"
+            />
+          </div>
         </div>
 
         {/* CONCEPTO */}
@@ -327,6 +344,7 @@ function InvoiceForm() {
       <div ref={componentRef} className="invoiceweb">
         {verWeb ? (
           <InvoiceWeb
+            numero={numero}
             base={base}
             iva={iva}
             totaliva={totaliva}
@@ -335,7 +353,6 @@ function InvoiceForm() {
             body={body}
             fecha={fecha}
             total={total}
-            // payer={payer}
             user={{
               name,
               surname,

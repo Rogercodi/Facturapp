@@ -127,6 +127,12 @@ function MyInvoices() {
                       scope="col"
                       className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
                     >
+                      Número
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
+                    >
                       Fecha
                     </th>
                     <th
@@ -163,6 +169,18 @@ function MyInvoices() {
                       scope="col"
                       className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
                     >
+                      PAGADOR
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
+                    >
+                      EMAIL PAGADOR
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-medium text-gray-500 uppercase"
+                    >
                       Acciones
                     </th>
                   </tr>
@@ -176,6 +194,9 @@ function MyInvoices() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-gray-200">
                           {item.idinvoice}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium text-gray-800 dark:text-gray-200">
+                          {item.numero}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
                           {item.fecha}
@@ -193,7 +214,13 @@ function MyInvoices() {
                           {item.totalirpf + "€"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
-                          {item.email + "€"}
+                          {item.total + "€"}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
+                          {item.nombre}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-800 dark:text-gray-200">
+                          {item.email}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                           <button
@@ -265,6 +292,7 @@ function MyInvoices() {
           {verWeb ? (
             <InvoiceWeb
               base={invoice?.base || 0}
+              numero={invoice?.numero || ''}
               iva={invoice?.iva || 0}
               totaliva={invoice?.totaliva || 0}
               irpf={invoice?.irpf || 0}

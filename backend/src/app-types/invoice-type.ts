@@ -1,5 +1,6 @@
 export interface IInvoice {
     idinvoice?: number,
+    numero: string,
     base: number,
     iva: number,
     totaliva: number,
@@ -22,6 +23,7 @@ export interface IInvoice {
 
  export interface IAppInvoice {
     idinvoice?: number,
+    numero: string
     base: number,
     iva: number,
     totaliva: number,
@@ -38,7 +40,8 @@ export interface IInvoice {
     nif?: string,
     domicilio?: string,
     poblacion?: string,
-    cp?: string
+    cp?: string,
+    setFecha?(): any;
   }
 
 

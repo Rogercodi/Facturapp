@@ -12,7 +12,7 @@ export class UserSqlRepository implements IUserSqlRepository {
   constructor() {}
 
   // MY INVOICES
-  async getMyInvoices(id: number): Promise<AppInvoice[]> {
+  async getMyInvoices(id: number): Promise<IAppInvoice[]> {
     let text =
       "SELECT * FROM invoices i LEFT JOIN payers p ON i.idpayer=p.idpayer WHERE i.idusuario = $1 ";
     let values = [id];
@@ -20,13 +20,14 @@ export class UserSqlRepository implements IUserSqlRepository {
       .rows;
     let myAppInvoices: IAppInvoice[] = [];
     myInvoices.forEach((invoice: IInvoice) => {
+     
       myAppInvoices.push(new AppInvoice(invoice));
     });
     return myAppInvoices;
   }
 
   // MY PAYERS
-  async getMyPayers(id: number): Promise<AppPayer[]> {
+  async getMyPayers(id: number): Promise<IAppPayer[]> {
     let text = "SELECT * FROM payers p WHERE p.idusuario = $1";
     let values = [id];
     let myPayers: IPayer[] = (await API.poolConnection.query(text, values))
@@ -42,6 +43,7 @@ export class UserSqlRepository implements IUserSqlRepository {
   // NEW INVOICE
   async newInvoice(invoice: IAppInvoice): Promise<number> {
     let {
+      numero,
       base,
       body,
       fecha,
@@ -54,8 +56,9 @@ export class UserSqlRepository implements IUserSqlRepository {
       idusuario,
     } = invoice;
     let text =
-      "INSERT INTO invoices (base, iva, totalIva, irpf, totalIrpf, body, fecha, total, idpayer, idusuario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
+      "INSERT INTO invoices (numero, base, iva, totalIva, irpf, totalIrpf, body, fecha, total, idpayer, idusuario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
     let values = [
+      numero,
       base,
       iva,
       totaliva,
@@ -197,5 +200,5 @@ export class UserSqlRepository implements IUserSqlRepository {
 
 
 
-export { TRecoverData };
+
 

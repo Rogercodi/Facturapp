@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { TRecoverData, UserSqlRepository } from "../../Repositories/UserSqlRepositories";
+import {  UserSqlRepository } from "../../Repositories/UserSqlRepositories";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
+import { TRecoverData } from "../../app-types/recovery-types";
 
 
 export class RecoverUserController {

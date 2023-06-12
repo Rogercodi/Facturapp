@@ -2,6 +2,7 @@ import { IInvoice, IAppInvoice } from "../app-types/invoice-type";
 
 export class InvoiceSQL implements IInvoice {
     readonly idinvoice?: number;
+    readonly numero: string;
     readonly base: number;
     readonly iva: number
     readonly totaliva: number;
@@ -15,7 +16,8 @@ export class InvoiceSQL implements IInvoice {
     
     
     constructor(invoice: IAppInvoice) {
-      this.idinvoice = invoice.idinvoice
+      this.idinvoice = invoice.idinvoice;
+      this.numero = invoice.numero;
       this.base = invoice.base;
       this.iva = invoice.iva;
       this.totaliva = invoice.totaliva;

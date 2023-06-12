@@ -15,7 +15,7 @@ const Router = express.Router();
 
 //GET MYINVOICES
 const myInvoicesController = new getInvoicesController();
-Router.post("/user/myinvoices", auth.pass, myInvoicesController.getMyInvoices.bind(myInvoicesController));
+Router.post("/user/myinvoices", myInvoicesController.getMyInvoices.bind(myInvoicesController));
 
 //GET MYPAYERS
 const getMyPayersController = new getPayersController();

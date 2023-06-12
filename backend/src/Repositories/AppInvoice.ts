@@ -2,6 +2,7 @@ import { IAppInvoice, IInvoice } from "../app-types/invoice-type";
 
 export class AppInvoice implements IAppInvoice {
     readonly idinvoice?: number;
+    readonly numero: string;
     readonly base: number;
     readonly iva: number
     readonly totaliva: number;
@@ -22,7 +23,8 @@ export class AppInvoice implements IAppInvoice {
     
     
     constructor(invoice: IInvoice) {
-      this.idinvoice = invoice.idinvoice
+      this.idinvoice = invoice.idinvoice;
+      this.numero = invoice.numero
       this.base = invoice.base;
       this.iva = invoice.iva;
       this.totaliva = invoice.totaliva;
@@ -40,5 +42,8 @@ export class AppInvoice implements IAppInvoice {
       this.domicilio = invoice.domicilio;
       this.poblacion = invoice.poblacion;
       this.cp = invoice.cp;
+     
     };
+
+   
   };

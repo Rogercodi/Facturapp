@@ -53,6 +53,7 @@ function UserNav() {
     };
     axiosCall('/user/myinvoices', 'post', data)
       .then((result) => {
+        console.log(result.data)
         if(result.data.greenmessage) {
         setInvoices(result.data.appInvoices);
         } else if (result.data.redmessage) {

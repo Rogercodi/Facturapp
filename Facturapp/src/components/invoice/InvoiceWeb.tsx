@@ -3,7 +3,7 @@ import { Invoiceprops } from '../Types/Invoiceprops';
 
 
 
-function InvoiceWeb({base, iva, irpf, body,fecha,payerdata,total,totalirpf,totaliva,user, papellidos, pcp, pdomicilio, pemail, pnif,pnombre,ppoblacion}: Invoiceprops) {
+function InvoiceWeb({base, iva, irpf, body,fecha, numero,total,totalirpf,totaliva,user, papellidos, pcp, pdomicilio, pemail, pnif,pnombre,ppoblacion}: Invoiceprops) {
 
 
 
@@ -15,12 +15,12 @@ return (
       <div className="flex justify-between">
         <div className="text-xl pl-10 pt-4">
           <h2 className="font-bold">Fecha</h2>
-          <h2>{fecha || ""}</h2>
+          <h2>{fecha || ''}</h2>
         </div>
   {/* INVOICE NUM */}
         <div className="text-xl pr-20 pt-4">
           <h2 className="font-bold">Num Factura</h2>
-          <h2>{"F2023/0008"}</h2>
+          <h2>{numero || ''}</h2>
         </div>
       </div>
   {/* USER DATA */}

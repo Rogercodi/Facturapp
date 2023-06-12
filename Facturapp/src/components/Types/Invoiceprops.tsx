@@ -2,6 +2,7 @@ import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { UserAppI } from "../../../../backend/src/app-types/user-types";
 
 export type Invoiceprops = {
+    numero: string;
     base: number;
     iva: number;
     irpf: number;

@@ -35,13 +35,14 @@ INSERT INTO payers (nombre, apellidos, email, nif, domicilio, poblacion, cp, idu
 
 CREATE TABLE invoices (
     idinvoice serial not null,
+    numero VARCHAR (20) not null,
     base DECIMAL,
     iva INT,
     totalIva DECIMAL,
     irpf INT,
     totalIrpf DECIMAL,
     body VARCHAR(50),
-    fecha DATE,
+    fecha VARCHAR(20),
     total DECIMAL,
     idpayer INT,
     idusuario INT,
