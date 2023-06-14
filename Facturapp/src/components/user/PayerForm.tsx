@@ -19,12 +19,13 @@ export function PayerForm() {
     closeErrorWindow,
     name,
     axiosCall,
-    protectRoute
+    protectRoute,
   } = useContext(FacturappContext) as FacturappContextType;
 
   const [idpayer, setIdpayer] = useState<number | undefined>(
     updatePayer?.idpayer || 0
   );
+
   const [nombre, setNombre] = useState(updatePayer?.nombre || "");
   const [apellidos, setApellidos] = useState(updatePayer?.apellidos || "");
   const [email, setEmail] = useState(updatePayer?.email || "");
@@ -51,7 +52,7 @@ export function PayerForm() {
       idusuario,
     };
 
-    axiosCall('/user/newpayer','post', data)
+    axiosCall("/user/newpayer", "post", data)
       .then((result) => {
         if (result.data.greenmessage) {
           setGreenMessage(result.data.greenmessage);
@@ -61,8 +62,8 @@ export function PayerForm() {
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   };
 
   //UPDATE PAYER
@@ -89,24 +90,22 @@ export function PayerForm() {
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
-    
+        console.log(err);
+      });
   };
 
   protectRoute();
 
   return (
     <div className="bg-slate-200">
+      {/* MESSAGES */}
       <div className="messages">
-        {/* ERROR WINDOW */}
         {redMessage === "" ? (
           ""
         ) : (
           <RedalertElement redmessage={redMessage} onClick={closeErrorWindow} />
         )}
 
-        {/* GREEN MESSAGE WINDOWS */}
         {greenMessage === "" ? (
           ""
         ) : (

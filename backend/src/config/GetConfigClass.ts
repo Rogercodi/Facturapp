@@ -1,4 +1,4 @@
-import { IConfiguration, AppConfiguration, serverConfig, sqlConfig } from "./Config-types";
+import { IConfiguration, AppConfiguration, serverConfig, sqlConfig, emailjsConfig } from "./Config-types";
 
 export class Configuration implements IConfiguration {
   
@@ -6,6 +6,7 @@ export class Configuration implements IConfiguration {
     return {
       server: this.getServerConfig(),
       sql: this.getSqlConfig(),
+      emailjs: this.getEmailConfig()
     };
   };
 
@@ -25,7 +26,16 @@ export class Configuration implements IConfiguration {
       database: <string>process.env.DATABASE,
       user: <string>process.env.USERDB,
     };
-
     return sqlConfig;
   };
+
+  private getEmailConfig(): emailjsConfig {
+    const emailConfig: emailjsConfig = {
+      service_id: <string>process.env.EMAIL_SERVICE_ID,
+      template_id: <string>process.env.EMAIL_TEMPLATE_ID,
+      public_key: <string>process.env.EMAIL_PUBLIC_KEY
+    }
+    
+    return emailConfig
+  }
 };

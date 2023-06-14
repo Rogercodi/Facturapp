@@ -8,6 +8,7 @@ import { UpdateUserController } from "../controllers/user-controllers/update-use
 import { auth } from "../helpers/pass-helper";
 import { DeleteInvoicesController } from "../controllers/user-controllers/delete-invoice-controller";
 import { DeletePayerController } from "../controllers/user-controllers/delete-payer-controller";
+import { UpdateInvoiceController } from "../controllers/user-controllers/update-invoice-controller";
 
 //-------------------------------------------------- END IMPORTS -------------------------------------------------------------//
 
@@ -36,6 +37,10 @@ Router.put('/user/updatepayer', auth.pass, editPayerController.updatePayer.bind(
 //UPDATE USER
 const editUserController = new UpdateUserController();
 Router.put('/user/edituser', auth.pass, editUserController.updateUser.bind(editUserController));
+
+//UPDATE INVOICE
+const editInvoiceController = new UpdateInvoiceController();
+Router.put('/user/updateinvoice', auth.pass, editInvoiceController.updateInvoice.bind(editInvoiceController));
 
 //DELETE INVOICE
 const deleteInvoiceController = new DeleteInvoicesController();

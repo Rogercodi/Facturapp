@@ -20,7 +20,6 @@ export class UserSqlRepository implements IUserSqlRepository {
       .rows;
     let myAppInvoices: IAppInvoice[] = [];
     myInvoices.forEach((invoice: IInvoice) => {
-     
       myAppInvoices.push(new AppInvoice(invoice));
     });
     return myAppInvoices;
@@ -159,6 +158,49 @@ export class UserSqlRepository implements IUserSqlRepository {
     return result;
   }
 
+  //UPDATE INVOICE
+
+  public async updateInvoice(invoice: IAppInvoice): Promise<number> {
+    let {
+      idinvoice,
+      numero,
+      base,
+      body,
+      fecha,
+      irpf,
+      iva,
+      total,
+      totalirpf,
+      totaliva,
+      idpayer,
+      idusuario,
+    } = invoice;
+    console.log(invoice)
+    // UPDATE payers SET nombre = 'TEST', apellidos =, email =, nif =, domicilio =, poblacion =, cp = WHERE payers.idpayer = 1;
+
+    let text =
+      "UPDATE invoices i SET numero = $1, base = $2, iva = $3, totalIva = $4, irpf = $5, totalIrpf = $6, body = $7, fecha = $8, total = $9, idpayer = $10, idusuario = $11 WHERE i.idinvoice = $12";
+    let values = [
+      numero,
+      base,
+      iva,
+      totaliva,
+      irpf,
+      totalirpf,
+      body,
+      fecha,
+      total,
+      idpayer,
+      idusuario,
+      idinvoice
+    ];
+
+    let newInvoice: number = (await API.poolConnection.query(text, values))
+      .rowCount;
+
+    return newInvoice;
+  }
+
   //DELETE INVOICE
   public async deleteInvoice(id: number): Promise<number> {
     const text = "DELETE FROM invoices i WHERE i.idinvoice = $1 ";
@@ -186,19 +228,15 @@ export class UserSqlRepository implements IUserSqlRepository {
     } else {
       return result.rows;
     }
-  };
+  }
 
   //SET NEW PASSWORD
   public async setNewPassword(data: TNewPasswordData): Promise<number> {
-    let {password, email} = data;
-    let text = 'UPDATE users u SET passwordu = $1 WHERE u.email = $2;'
+    let { password, email } = data;
+    let text = "UPDATE users u SET passwordu = $1 WHERE u.email = $2;";
     let values = [password, email];
-    let result:number = (await API.poolConnection.query(text, values)).rowCount;
-    return result
+    let result: number = (await API.poolConnection.query(text, values))
+      .rowCount;
+    return result;
   }
 }
-
-
-
-
-

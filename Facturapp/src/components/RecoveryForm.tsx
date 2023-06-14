@@ -4,7 +4,8 @@ import validator from "validator";
 import FormInputElement from "./elements/FormInputElement";
 import GreenalertElement from "./elements/GreenalertElement";
 import RedalertElement from "./elements/Redalert-element";
-import { FacturappContext, FacturappContextType } from "../context/Context";
+import { FacturappContext } from "../context/Context";
+import { FacturappContextType } from "./Types/Context-Type";
 import bcrypt from "bcryptjs";
 
 

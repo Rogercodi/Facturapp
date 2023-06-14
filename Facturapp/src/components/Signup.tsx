@@ -1,7 +1,8 @@
 import axios from "axios";
 import { SetStateAction, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FacturappContext, FacturappContextType } from "../context/Context";
+import { FacturappContext } from "../context/Context";
+import { FacturappContextType } from "./Types/Context-Type";
 import validator from 'validator';
 import RedalertElement from "./elements/Redalert-element";
 import FormInputElement from "./elements/FormInputElement";

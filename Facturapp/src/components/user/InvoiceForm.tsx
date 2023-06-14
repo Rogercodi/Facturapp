@@ -11,24 +11,7 @@ import { FacturappContextType } from "../Types/Context-Type";
 import ReactPDF from "@react-pdf/renderer";
 
 function InvoiceForm() {
-  const [numero, setNumero] = useState("");
-  const [base, setBase] = useState(0);
-  const [iva, setIva] = useState(0);
-  const [irpf, setIrpf] = useState(0);
-  const [body, setBody] = useState("");
-  const [fecha, setFecha] = useState("");
-  const [totaliva, setTotalIva] = useState(0);
-  const [totalirpf, setTotalIrpf] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [idpayer, setIdpayer] = useState(0);
-  const [pnombre, setPnombre] = useState("");
-  const [papellidos, setPapellidos] = useState("");
-  const [pemail, setPemail] = useState("");
-  const [pnif, setPnif] = useState("");
-  const [pdomicilio, setPdomicilio] = useState("");
-  const [pcp, setPcp] = useState("");
-  const [ppoblacion, setPpoblacion] = useState("");
-  const [verWeb, setVerWeb] = useState(false);
+  
 
   //CONTEXT
   const {
@@ -49,7 +32,29 @@ function InvoiceForm() {
     closeErrorWindow,
     protectRoute,
     axiosCall,
+    updateInvoice,
+    setUpdateInvoice
   } = useContext(FacturappContext) as FacturappContextType;
+
+  const [idinvoice, setIdinvoice] = useState<number | undefined>(updateInvoice?.idinvoice || 0);
+  const [numero, setNumero] = useState(updateInvoice?.numero || "");
+  const [base, setBase] = useState(updateInvoice?.base || 0);
+  const [iva, setIva] = useState(updateInvoice?.iva  || 0);
+  const [irpf, setIrpf] = useState(updateInvoice?.irpf || 0);
+  const [body, setBody] = useState(updateInvoice?.body || "");
+  const [fecha, setFecha] = useState(updateInvoice?.fecha || "");
+  const [totaliva, setTotalIva] = useState(updateInvoice?.totaliva || 0);
+  const [totalirpf, setTotalIrpf] = useState(updateInvoice?.totalirpf || 0);
+  const [total, setTotal] = useState(updateInvoice?.total || 0);
+  const [idpayer, setIdpayer] = useState(updateInvoice?.idpayer || 0);
+  const [pnombre, setPnombre] = useState(updateInvoice?.nombre || "");
+  const [papellidos, setPapellidos] = useState(updateInvoice?.apellidos || '');
+  const [pemail, setPemail] = useState(updateInvoice?.email || "");
+  const [pnif, setPnif] = useState(updateInvoice?.nif || "");
+  const [pdomicilio, setPdomicilio] = useState(updateInvoice?.domicilio || "");
+  const [pcp, setPcp] = useState(updateInvoice?.cp || "");
+  const [ppoblacion, setPpoblacion] = useState(updateInvoice?.poblacion || "");
+  const [verWeb, setVerWeb] = useState(false);
 
   const idusuario = iduser;
   const navigate = useNavigate();
@@ -87,7 +92,7 @@ function InvoiceForm() {
   }, [base, totaliva, totalirpf]);
 
   //NEW INVOICE
-  const handleSubmit = () => {
+  const newInvoice = () => {
     let invoice: IAppInvoice = {
       numero,
       base,
@@ -116,6 +121,38 @@ function InvoiceForm() {
       });
   };
 
+  const updateInv = () => {
+    let invoice: IAppInvoice = {
+      idinvoice,
+      numero,
+      base,
+      iva,
+      totaliva,
+      irpf,
+      totalirpf,
+      body,
+      fecha,
+      total,
+      idpayer,
+      idusuario,
+    };
+
+    axiosCall("/user/updateinvoice", "put", invoice)
+      .then((result) => {
+        if (result.data.greenmessage) {
+          setGreenMessage(result.data.greenmessage);
+          setUpdateInvoice(null)
+          navigate("/user");
+        } else {
+          setRedMessage(result.data.redmessage);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+  }
+
   // PDF GENERATOR
   const componentRef: any = useRef();
 
@@ -124,8 +161,9 @@ function InvoiceForm() {
   return (
     <>
       <div>
+         {/* MESSAGES */}
         <div className="messages">
-          {/* ERROR WINDOW */}
+         
           {redMessage === "" ? (
             ""
           ) : (
@@ -146,6 +184,7 @@ function InvoiceForm() {
           )}
         </div>
         <h1 className="text-4xl font-bold py-4 flex justify-center">Factura</h1>
+       
         {/* USER PAYER DATA */}
         <div className="flex justify-evenly my-10">
           <div className="px-4">
@@ -210,6 +249,7 @@ function InvoiceForm() {
               }}
               type="date"
               className="rounded-lg mb-4 ml-4 px-2 border-2 border-solid border-slate-400"
+              value={fecha || ''}
             ></input>
           </div>
           <div>
@@ -220,6 +260,7 @@ function InvoiceForm() {
               }}
               type="text"
               className="rounded-lg mb-4 ml-4 px-2 border-2 border-solid border-slate-400"
+              value={numero}
             />
           </div>
         </div>
@@ -234,6 +275,7 @@ function InvoiceForm() {
             name="body"
             id="body"
             placeholder="Concepto"
+            value={body || ''}
             cols={70}
           ></textarea>
         </div>
@@ -246,6 +288,7 @@ function InvoiceForm() {
             }}
             className="border-2 border-solid border-slate-400 rounded-lg mb-4 ml-4 w-1/6 text-center py-1"
             type="text"
+            value={base || ''}
             placeholder="base imponible €"
           />
         </div>
@@ -257,6 +300,7 @@ function InvoiceForm() {
               setIva(parseFloat(e.target.value));
             }}
             className="border-2 mb-4  border-solid border-slate-400 rounded-lg "
+            value={iva || ''}
             name="iva"
             id="iva"
           >
@@ -331,11 +375,11 @@ function InvoiceForm() {
             {verWeb ? "Ocultar Factura" : "Previsualizar Factura"}
           </button>
           <button
-            onClick={handleSubmit}
+            onClick={updateInvoice === null ? newInvoice : updateInv}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded m-2"
             type="submit"
           >
-            Guardar Factura
+            {updateInvoice !== null ? 'Actualizar Factura' : 'Guardar Factura'}
           </button>
         </div>
       </div>
@@ -376,6 +420,7 @@ function InvoiceForm() {
           ""
         )}
       </div>
+      
       {/* PDF BUTTON */}
       {verWeb ? (
         <div className="flex justify-center mt-10">

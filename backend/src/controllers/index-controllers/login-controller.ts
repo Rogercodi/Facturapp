@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import { UserApp } from "../../Repositories/UserApp";
 import { UserAppI, sqlUserI } from "../../app-types/user-types";
+import { emailjsConfig } from "../../config/Config-types";
+import { Configuration } from "../../config/GetConfigClass";
 
 export class LoginController {
   constructor() {}
@@ -18,7 +20,9 @@ export class LoginController {
           req.logIn(user, (err) => {
             if (err) throw err;
             let appUser: UserAppI = new UserApp(user);
-            return res.send({ greenmessage: "Bienvenido!", appUser });
+            let emailconfig: emailjsConfig = new Configuration().getConfigurations().emailjs;
+            console.log(emailconfig)
+            return res.send({ greenmessage: "Bienvenido!", appUser, emailconfig });
           });
         }
       }

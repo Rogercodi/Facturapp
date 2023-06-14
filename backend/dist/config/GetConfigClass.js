@@ -6,6 +6,7 @@ class Configuration {
         return {
             server: this.getServerConfig(),
             sql: this.getSqlConfig(),
+            emailjs: this.getEmailConfig()
         };
     }
     ;
@@ -28,6 +29,14 @@ class Configuration {
         return sqlConfig;
     }
     ;
+    getEmailConfig() {
+        const emailConfig = {
+            service_id: process.env.EMAIL_SERVICE_ID,
+            template_id: process.env.EMAIL_TEMPLATE_ID,
+            public_key: process.env.EMAIL_PUBLIC_KEY
+        };
+        return emailConfig;
+    }
 }
 exports.Configuration = Configuration;
 ;

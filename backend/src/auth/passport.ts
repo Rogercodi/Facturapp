@@ -52,7 +52,7 @@ export const loginPassport = function initialize(passport: PassportStatic) {
     )
   );
 
-  passport.serializeUser((user: any & { id: string }, done) => {
+  passport.serializeUser((user: any , done) => {
     done(null, user);
   });
 

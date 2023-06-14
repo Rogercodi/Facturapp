@@ -1,8 +1,9 @@
 import {  ReactNode, createContext, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
-
+import { Outlet, useNavigate } from "react-router-dom";
+import {emailjsConfig} from '../../../backend/src/config/Config-types'
 import { IAppPayer } from "../../../backend/src/app-types/payer-type";
 import axios from "axios";
+import { IAppInvoice } from "../../../backend/src/app-types/invoice-type";
 
 interface props {
   children?: ReactNode;
@@ -28,6 +29,8 @@ export function FacturappContextProvider({ children }: props) {
   const [invoices, setInvoices] = useState([]);
   const [payers, setPayers] = useState([]);
   const [updatePayer, setUpdatePayer] = useState<IAppPayer | null>();
+  const [updateInvoice, setUpdateInvoice] = useState<IAppInvoice | null>(null);
+  const [emailConfig, setEmailConfig] = useState<emailjsConfig | null>(null);
 
   const navigate = useNavigate();
 
@@ -88,7 +91,11 @@ export function FacturappContextProvider({ children }: props) {
         setUpdatePayer,
         closeErrorWindow,
         axiosCall,
-        protectRoute
+        protectRoute,
+        updateInvoice,
+        setUpdateInvoice,
+        emailConfig,
+        setEmailConfig
       }}
     >
       <Outlet />

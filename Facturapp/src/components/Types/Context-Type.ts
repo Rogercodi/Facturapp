@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { IAppInvoice } from "../../../../backend/src/app-types/invoice-type";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
+import { emailjsConfig } from "../../../../backend/src/config/Config-types";
 
 export type FacturappContextType = {
     redMessage: string;
@@ -39,5 +40,9 @@ export type FacturappContextType = {
       data: object
     ): Promise<AxiosResponse<any, any>>;
     protectRoute(): void;
+    updateInvoice: IAppInvoice;
+    setUpdateInvoice: React.Dispatch<React.SetStateAction<IAppInvoice | null>>;
+    emailConfig: emailjsConfig,
+    setEmailConfig: React.Dispatch<React.SetStateAction<emailjsConfig | null>>
   };
   

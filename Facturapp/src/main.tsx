@@ -67,13 +67,13 @@ const router = createBrowserRouter([
         element: [<UserNav />, <PayerForm />]
       },
       {
+        path: '/user/updateinvoice',
+        element: [<UserNav />, <InvoiceForm />]
+      },
+      {
         path: '/user/myprofile',
         element: [<UserNav />, <UserForm />]
       },
-      // {
-      //   path: '/user/newinvoice/invoiceweb',
-      //   element: <InvoicesForRouter />
-      // }
   ]
 }
 

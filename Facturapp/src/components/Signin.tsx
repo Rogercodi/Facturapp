@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { FacturappContext, FacturappContextType } from "../context/Context";
+import { FacturappContext } from "../context/Context";
+import { FacturappContextType } from "./Types/Context-Type";
 import { UserAppI } from "../../../backend/src/app-types/user-types";
 import RedalertElement from "./elements/Redalert-element";
 import validator from "validator";
@@ -29,6 +30,7 @@ function Signin() {
     greenMessage,
     closeErrorWindow,
     axiosCall,
+    setEmailConfig
   } = useContext(FacturappContext) as FacturappContextType;
 
   //LOGIN
@@ -41,6 +43,7 @@ function Signin() {
         if (result.data.redmessage) {
           setRedMessage(result.data.redmessage);
         } else {
+          setEmailConfig(result.data.emailconfig);
           let user: UserAppI = result.data.appUser;
           let { address, banknumber, city, cp, dni, iduser, name, surname } =
             user;
@@ -52,7 +55,7 @@ function Signin() {
             setCp(cp),
             setIduser(iduser),
             setCity(city),
-            setEmailapp(email),
+            setEmailapp(email)
             setTimeout(() => navigate("/user"), 500);
         }
     })

@@ -12,6 +12,7 @@ export interface IUserSqlRepository {
     newPayer(payer: IPayer): Promise<number>;
     updateUser(user: sqlUserI): Promise<number>;
     updatePayer(payer: IPayer): Promise<number>;
+    updateInvoice(invoice: IAppInvoice): Promise<number>;
     deleteInvoice(id: number): Promise<number>;
     deletePayer(id: number): Promise<number>;
     recoverUser(email: string): Promise<TRecoverData[] | 0>;

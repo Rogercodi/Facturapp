@@ -1,13 +1,18 @@
-import { useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IAppPayer } from "../../../../backend/src/app-types/payer-type";
 import { FacturappContext } from "../../context/Context";
 import { FacturappContextType } from "../Types/Context-Type";
-import axios from "axios";
 import GreenalertElement from "../elements/GreenalertElement";
 import RedalertElement from "../elements/Redalert-element";
+import emailjs from "@emailjs/browser";
 
 function MyPayers() {
+  const [emailFlag, setEmailFlag] = useState(false);
+  const [emailPayer, setEmailPayer] = useState("");
+  const [emailName, setEmailName] = useState("");
+  const [message, setMessage] = useState("");
+
   //CONTEXT
   const {
     payers,
@@ -17,16 +22,16 @@ function MyPayers() {
     setGreenMessage,
     closeErrorWindow,
     greenMessage,
-    name,
     protectRoute,
-    axiosCall
+    axiosCall,
+    emailConfig,
   } = useContext(FacturappContext) as FacturappContextType;
 
   const navigate = useNavigate();
 
   //DELETE PAYER
   const deletePayer = (id: number | undefined) => {
-    axiosCall('user/deletepayer', "delete", { id })
+    axiosCall("user/deletepayer", "delete", { id })
       .then((result) => {
         if (result.data.redmessage) {
           setRedMessage(result.data.redmessage);
@@ -36,8 +41,27 @@ function MyPayers() {
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
+  };
+
+  //SEND EMAIL
+  const sendEmail = (
+    payeremail: string | undefined,
+    payername: string | undefined,
+    message: string
+  ) => {
+    emailjs.send(
+      emailConfig.service_id,
+      emailConfig.template_id,
+      {
+        from_name: name,
+        to_name: payername,
+        message: message,
+        email: payeremail,
+      },
+      emailConfig.public_key
+    );
   };
 
   protectRoute();
@@ -173,10 +197,20 @@ function MyPayers() {
                             Actualizar
                           </button>
                           <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 ml-1 rounded"
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 ml-2 rounded"
                             onClick={() => deletePayer(item.idpayer)}
                           >
                             Eliminar
+                          </button>
+                          <button
+                            onClick={() => {
+                              setEmailFlag(true);
+                              setEmailName(item.nombre);
+                              setEmailPayer(item.email);
+                            }}
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 ml-2 rounded"
+                          >
+                            Enviar email
                           </button>
                         </td>
                       </tr>
@@ -188,6 +222,36 @@ function MyPayers() {
           </div>
         </div>
       </div>
+      {/* SEND EMAIL WINDOW */}
+      {emailFlag ? (
+        <div className="w-1/3 flex flex-col mx-auto mt-10">
+          <textarea
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+            className="border-2 p-2"
+            cols={100}
+            rows={10}
+          ></textarea>
+          <button
+            onClick={() => {
+              let a = confirm("Enviar email ahora?");
+              if (a) {
+                sendEmail(emailPayer, emailName, message);
+                setEmailFlag(false),
+                  setEmailName(""),
+                  setEmailPayer(""),
+                  setMessage("");
+              }
+            }}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-4 rounded"
+          >
+            Enviar email
+          </button>
+        </div>
+      ) : (
+        ""
+      )}
       <div className="flex justify-center mt-16 ">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-14 rounded"
