@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { UserSqlRepository } from "../../Repositories/UserSqlRepositories";
+import { UserSqlRepository } from "../../db/UserSqlRepositories";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
 import { TNewPasswordData } from "../../app-types/recovery-types";
 import bcrypt from 'bcrypt';

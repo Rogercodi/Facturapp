@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserSqlRepository } from "../../Repositories/UserSqlRepositories";
+import { UserSqlRepository } from "../../db/UserSqlRepositories";
 import { IPayer, IAppPayer } from "../../app-types/payer-type";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
 import { PayerSQL } from "../../Repositories/SqlPayer";

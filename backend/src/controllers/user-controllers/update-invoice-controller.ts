@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserSqlRepository } from "../../Repositories/UserSqlRepositories";
+import { UserSqlRepository } from "../../db/UserSqlRepositories";
 import { IAppInvoice } from "../../app-types/invoice-type";
 import { IInvoice } from "../../app-types/invoice-type";
 import { InvoiceSQL } from "../../Repositories/SqlInvoice";

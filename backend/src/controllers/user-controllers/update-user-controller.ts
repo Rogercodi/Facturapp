@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserSqlRepository } from "../../Repositories/UserSqlRepositories";
+import { UserSqlRepository } from "../../db/UserSqlRepositories";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
 import { sqlUserI } from "../../app-types/user-types";
 import { UserAppI } from "../../app-types/user-types";
@@ -15,8 +15,8 @@ export class UpdateUserController {
   public async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
       let user: UserAppI = req.body;
-      let toUpdateUser = new UserSql(user)
-      let result = await this.userRepository.updateUser(toUpdateUser);
+     
+      let result = await this.userRepository.updateUser(user);
       if (result === 1) {
         res.send({ greenmessage: "Usuario actualizado correctamente", result });
       } else {

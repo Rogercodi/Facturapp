@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UserSqlRepository } from "../../Repositories/UserSqlRepositories";
+import { UserSqlRepository } from "../../db/UserSqlRepositories";
 import { IPayer, IAppPayer } from "../../app-types/payer-type";
 import { IUserSqlRepository } from "../../app-types/user-repository-type";
 import { PayerSQL } from "../../Repositories/SqlPayer";
@@ -14,9 +14,7 @@ export class updatePayerController {
   public async updatePayer(req: Request, res: Response, next: NextFunction) {
     try {
       let toUpdatePayer: IAppPayer = req.body;
-      
-      let sqlPayer = new PayerSQL(toUpdatePayer)
-      const result = await this.userRepository.updatePayer(sqlPayer);
+      const result = await this.userRepository.updatePayer(toUpdatePayer);
       return res.send({ greenmessage: "Pagador actualizado correctamente", result });
     } catch (error) {
       console.log(error);
